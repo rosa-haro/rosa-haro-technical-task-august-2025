@@ -1,10 +1,10 @@
-export interface UserSuggestion {
+export type UserSuggestion = {
   login: string;
   avatar_url: string;
   html_url: string;
 }
 
-export interface Repo {
+export type GithubRepo = {
   id: number;
   name: string;
   html_url: string;
@@ -14,3 +14,19 @@ export interface Repo {
   forks_count: number;
   updated_at: string;
 }
+
+
+export type GithubUser = {
+  login: string;
+  id: number;
+  avatar_url: string;
+  html_url: string;
+  name: string | null;
+  bio: string | null;
+  followers: number;
+  following: number;
+  public_repos: number;
+  location: string | null;
+  blog: string | null;
+  company: string | null;
+};
