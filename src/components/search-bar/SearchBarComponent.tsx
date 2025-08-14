@@ -1,4 +1,6 @@
 import {
+  useEffect,
+  useRef,
   useState,
   type ChangeEvent,
   type FormEvent,
@@ -17,23 +19,72 @@ const SearchBarComponent = () => {
 
   const navigate = useNavigate();
   const listboxId = "user-suggestions";
+  const debounceId = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const controllerRef = useRef<AbortController | null>(null);
+
+
+/**
+ * Fetches user suggestions for the given query (length >=2).
+ * Cancels any in-flight request via the internal `controllerRef` before
+ * starting a new one to prevent race conditions and stale results.
+ * On success, it opens the dropdown even when the list is empty so the
+ * "No results" message can be displayed in an accessible way.
+ * @param q - Trimmed search query (length >= 2).
+ * @returns Promise<void>
+ */
+  const requestSuggestions = async (q: string) => {
+    if (controllerRef.current) {
+      controllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    controllerRef.current = controller;
+
+    try {
+      const res = await searchUserFetch(q, { signal: controller.signal });
+
+      setItems(res);
+      setIsOpen(true);
+      setActiveIndex(0);
+    } catch (error: unknown) {
+      if (error instanceof DOMException && error.name === "AbortError") return;
+      console.error("Suggestions error:", error);
+
+      setItems([]);
+      setIsOpen(false);
+    } finally {
+      if (controllerRef.current === controller) {
+        controllerRef.current = null;
+      }
+    }
+  };
 
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
     setSearchQuery(v);
 
     const q = v.trim();
+
     if (q.length < 2) {
+      if (debounceId.current) {
+        clearTimeout(debounceId.current);
+        debounceId.current = null;
+      }
+      if (controllerRef.current) {
+        controllerRef.current.abort();
+        controllerRef.current = null;
+      }
       setItems([]);
       setIsOpen(false);
       setActiveIndex(0);
       return;
     }
 
-    const res = await searchUserFetch(q);
-    setItems(res);
-    setIsOpen(res.length > 0);
-    setActiveIndex(0);
+    if (debounceId.current) {
+      clearTimeout(debounceId.current);
+    }
+    debounceId.current = setTimeout(() => {
+      requestSuggestions(q);
+    }, 300);
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -44,8 +95,12 @@ const SearchBarComponent = () => {
     setIsOpen(false);
   };
 
+  // Keyboard behavior for the combobox:
+  // - Escape: closes the dropdown (does NOT clear the input; we use type="text").
+  // - ArrowDown/ArrowUp: moves the active index while the dropdown is open.
+  // - Enter: if the dropdown is open and the active item exists, it selects it and 
+  //   navigates. Otherwise, it lets the form submit with the typed text.
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-
     if (e.key === "Escape") {
       setIsOpen(false);
       return;
@@ -72,6 +127,19 @@ const SearchBarComponent = () => {
     navigate(`/user/${encodeURIComponent(item.login)}`);
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    return () => {
+      if (debounceId.current) {
+        clearTimeout(debounceId.current);
+        debounceId.current = null;
+      }
+      if (controllerRef.current) {
+        controllerRef.current.abort();
+        controllerRef.current = null;
+      }
+    };
+  }, []);
 
   return (
     <div
@@ -102,7 +170,7 @@ const SearchBarComponent = () => {
         </button>
       </form>
 
-      {isOpen && items.length > 0 && (
+      {isOpen && (
         <SearchSuggestionsComponent
           items={items}
           activeIndex={activeIndex}

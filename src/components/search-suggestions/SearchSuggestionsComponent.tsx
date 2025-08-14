@@ -1,9 +1,31 @@
 import type { UserSuggestion } from "../../core/types/github";
 
+/**
+ * Presentational listbox for user search suggestions.
+ * 
+ * Accessibility:
+ * - The root element is a <ul id="user-suggestions" role="listbox">
+ * - Each item is rendered as <li role="option" aria-selected={boolean}>
+ * - The parent combobox should reference this listbox via aria-controls="user-suggestions"
+ *   and manage focus/active item via aria-activedescendant="suggestion-{index}".
+ * 
+ * Empty state: - The Component always renders the <ul>. When `items.length === 0`,
+ * it shows a single disabled <li> with the "No results" message.
+ * 
+ * Interaction:
+ * - Mouse selection uses onMouseDown to avoid losing focus before selecting.
+ * - Keyboard navigation (↑/↓/Enter) is habled by the parent combobox.
+ * 
+ * @param items - Suggestions to render (login, avatar_url, html_url).
+ * @param activeIndex - Zero-based index of the highlighted suggestion.
+ * @param onSelect - Called when a suggestion is chosen (click or mouse down).
+ * @param onHover - Optional callback when the pointer hovers an item (updates activeIndex)
+ */
+
 type Props = {
   items: UserSuggestion[];
-  activeIndex: number; // highlighted by keyboard
-  onSelect: (item: UserSuggestion) => void; // click or MouseDown
+  activeIndex: number;
+  onSelect: (item: UserSuggestion) => void;
   onHover?: (index: number) => void;
   emptyText?: string;
 };

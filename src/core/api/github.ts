@@ -63,8 +63,26 @@ export const fetchUserRepos = async (username: string) => {
   }
 };
 
+
+/**
+ * Searches GitHub users for the given query and returns a simplified list
+ * of suggestions (login, avatar_url, html_url).
+ * 
+ * Uses the optional AbortSignal to cancel in-flight requests (useful when typing),
+ * 
+ * @param query - Raw user input. It will be trimmed and URL-encoded.
+ * @param opts - Optional options object.
+ * @param - opts.signal - AbortSignal to cancel the underlying fetch request.
+ * @returns Promise<UserSuggestion[]> - An array of suggestions (empty on error or no results).
+ * 
+ * @example
+ * const controller = new AbortController();
+ * const suggestions = await searchUserFetch("rosa", { signal: controller.signal });
+ * // controller.abort() will cancel the request if needed.
+ */
 export const searchUserFetch = async (
-  query: string
+  query: string,
+  opts?: { signal?: AbortSignal }
 ): Promise<UserSuggestion[]> => {
   try {
     const q = query.trim();
@@ -77,6 +95,7 @@ export const searchUserFetch = async (
         headers: {
           Accept: "application/vnd.github+json",
         },
+        signal: opts?.signal,
       }
     );
 
