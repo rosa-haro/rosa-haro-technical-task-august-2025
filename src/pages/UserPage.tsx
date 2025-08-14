@@ -45,9 +45,9 @@ const UserPage = () => {
   return (
     <>
       <UserInfoComponent user={user}/>
-      <SearchBarComponent />
+      <SearchBarComponent/>
       <LanguageFilterComponent />
-      <RepoListComponent />
+      <RepoListComponent repos={repos} />
     </>
   );
 };

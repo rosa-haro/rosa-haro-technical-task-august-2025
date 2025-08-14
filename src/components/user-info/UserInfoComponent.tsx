@@ -1,9 +1,9 @@
 import type { GithubUser } from "../../core/types/github";
 import { normalizeUrl } from "../../core/utils/url";
 
-type UserProps = { user: GithubUser };
+type Props = { user: GithubUser };
 
-const UserInfoComponent = ({ user }: UserProps) => {
+const UserInfoComponent = ({ user }: Props) => {
   const blogUrl = normalizeUrl(user.blog);
 
   return (
@@ -17,7 +17,8 @@ const UserInfoComponent = ({ user }: UserProps) => {
           @{user.login}
         </a>
       </header>
-      <p>{user.bio}</p>
+
+      {user.bio && <p>{user.bio}</p>}
       <ul>
         <li>
           <span>Followers</span>
@@ -28,21 +29,28 @@ const UserInfoComponent = ({ user }: UserProps) => {
           <span>{user.following}</span>
         </li>
       </ul>
-      <div>
+
+      {(user.location || user.email || blogUrl) && (
         <div>
-          <p>{user.location}</p>
-        </div>
-        <div>
-          <a href={`mailto:${user.email}`}>{user.email}</a>
-        </div>
-        <div>
+          {user.location && (
+            <div>
+              <p>{user.location}</p>
+            </div>
+          )}
+          {user.email && (
+            <div>
+              <a href={`mailto:${user.email}`}>{user.email}</a>
+            </div>
+          )}
           {blogUrl && (
-            <a href={blogUrl} target="_blank" rel="noopener noreferrer">
-              {user.blog}
-            </a>
+            <div>
+              <a href={blogUrl} target="_blank" rel="noopener noreferrer">
+                {user.blog}
+              </a>
+            </div>
           )}
         </div>
-      </div>
+      )}
     </section>
   );
 };
