@@ -1,4 +1,9 @@
-import type { GithubRepo, GithubUser } from "../types/github";
+import type {
+  GithubRepo,
+  GithubUser,
+  GithubUserSearchResponse,
+  UserSuggestion,
+} from "../types/github";
 
 const BASE_URL = "https://api.github.com";
 
@@ -6,12 +11,15 @@ export const fetchUserData = async (username: string) => {
   try {
     if (!username.trim()) return null;
 
-    const res = await fetch(`${BASE_URL}/users/${username}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/vnd.github+json",
-      },
-    });
+    const res = await fetch(
+      `${BASE_URL}/users/${encodeURIComponent(username)}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/vnd.github+json",
+        },
+      }
+    );
 
     if (!res.ok) {
       throw new Error(`Error ${res.status}`);
@@ -31,7 +39,9 @@ export const fetchUserRepos = async (username: string) => {
     if (!username.trim()) return [];
 
     const res = await fetch(
-      `${BASE_URL}/users/${username}/repos?per_page=100&sort=updated`,
+      `${BASE_URL}/users/${encodeURIComponent(
+        username
+      )}/repos?per_page=100&sort=updated`,
       {
         method: "GET",
         headers: {
@@ -53,33 +63,38 @@ export const fetchUserRepos = async (username: string) => {
   }
 };
 
-// export const searchUserFetch = async (query: string) => {
-//   try {
-//     if (!query.trim()) return [];
+export const searchUserFetch = async (
+  query: string
+): Promise<UserSuggestion[]> => {
+  try {
+    const q = query.trim();
+    if (!q) return [];
 
-//     const res = await fetch(
-//       `${BASE_URL}/search/users?q=${encodeURIComponent(query)}&per_page=5`,
-//       {
-//         method: "GET",
-//         headers: {
-//           Accept: "application/vnd.github+json",
-//         },
-//       }
-//     );
+    const res = await fetch(
+      `${BASE_URL}/search/users?q=${encodeURIComponent(q)}&per_page=5`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/vnd.github+json",
+        },
+      }
+    );
 
-//     if (!res.ok) {
-//       throw new Error(`Error ${res.status}`);
-//     }
+    if (!res.ok) {
+      throw new Error(`Error ${res.status}`);
+    }
 
-//     const result = await res.json();
+    const result = (await res.json()) as GithubUserSearchResponse;
 
-//     return result.items.map((user: any) => ({
-//       login: user.login,
-//       avatar_url: user.avatar_url,
-//       html_url: user.html_url,
-//     }));
-//   } catch (error) {
-//     console.error("Error buscando usuarios:", error);
-//     return [];
-//   }
-// };
+    if (!result || !Array.isArray(result.items)) return [];
+
+    return result.items.map(({ login, avatar_url, html_url }) => ({
+      login,
+      avatar_url,
+      html_url,
+    }));
+  } catch (error) {
+    console.error("Error searching users:", error);
+    return [];
+  }
+};

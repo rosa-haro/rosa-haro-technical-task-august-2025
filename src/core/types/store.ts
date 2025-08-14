@@ -1,8 +1,8 @@
-import type reducers from "../redux/reducers";
+// import type reducers from "../redux/reducers";
 
-export type Action<T = any> = {
-    type: string;
-    payload?: T
-}
+// export type Action<T = any> = {
+//     type: string;
+//     payload?: T
+// }
 
-export type RootState = ReturnType<typeof reducers>
+// export type RootState = ReturnType<typeof reducers>

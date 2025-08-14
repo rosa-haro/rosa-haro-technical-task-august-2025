@@ -1,40 +1,115 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import type { RootState } from "../../core/types/store";
+import {
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+  type KeyboardEvent,
+} from "react";
 import { useNavigate } from "react-router-dom";
-
-// https://api.github.com/users/rosa-haro/repos
+import type { UserSuggestion } from "../../core/types/github";
+import { searchUserFetch } from "../../core/api/github";
+import SearchSuggestionsComponent from "../search-suggestions/SearchSuggestionsComponent";
 
 const SearchBarComponent = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
-//   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  // const {loading, error} = useSelector((state: RootState) => state.searchBarReducer)
+  const [items, setItems] = useState<UserSuggestion[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const q = searchQuery.trim()
-    if (!q) return;
-    navigate(`/user/${q}`);
+  const navigate = useNavigate();
+  const listboxId = "user-suggestions";
+
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const v = e.target.value;
+    setSearchQuery(v);
+
+    const q = v.trim();
+    if (q.length < 2) {
+      setItems([]);
+      setIsOpen(false);
+      setActiveIndex(0);
+      return;
+    }
+
+    const res = await searchUserFetch(q);
+    setItems(res);
+    setIsOpen(res.length > 0);
+    setActiveIndex(0);
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value)
-  }
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const q = searchQuery.trim();
+    if (!q) return;
+    navigate(`/user/${encodeURIComponent(q)}`);
+    setIsOpen(false);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+
+    if (e.key === "Escape") {
+      setIsOpen(false);
+      return;
+    }
+
+    if (!isOpen) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIndex((i) => Math.min(i + 1, items.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex((i) => Math.max(i - 1, 0));
+    } else if (e.key === "Enter") {
+      if (items[activeIndex]) {
+        e.preventDefault();
+        navigate(`/user/${encodeURIComponent(items[activeIndex].login)}`);
+        setIsOpen(false);
+      }
+    }
+  };
+
+  const handleSelect = (item: UserSuggestion) => {
+    navigate(`/user/${encodeURIComponent(item.login)}`);
+    setIsOpen(false);
+  };
 
   return (
-    <div>
-      <form onSubmit={handleSearch}>
+    <div
+      role="combobox"
+      aria-haspopup="listbox"
+      aria-expanded={isOpen}
+      aria-controls={listboxId}
+      aria-owns={listboxId}
+    >
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Search by username..."
+          inputMode="search"
+          enterKeyHint="search"
+          placeholder="Search by username"
           value={searchQuery}
           onChange={handleChange}
-          autoComplete='on'
-          aria-label='GitHub username'
+          onKeyDown={handleKeyDown}
+          aria-label="GitHub username"
+          aria-autocomplete="list"
+          aria-activedescendant={
+            isOpen ? `suggestion-${activeIndex}` : undefined
+          }
+          autoComplete="off"
         />
-        <button type="submit" disabled={!searchQuery.trim()}>Search</button>
+        <button type="submit" disabled={!searchQuery.trim()}>
+          Search
+        </button>
       </form>
+
+      {isOpen && items.length > 0 && (
+        <SearchSuggestionsComponent
+          items={items}
+          activeIndex={activeIndex}
+          onSelect={handleSelect}
+          onHover={setActiveIndex}
+        />
+      )}
     </div>
   );
 };

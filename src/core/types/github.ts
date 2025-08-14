@@ -1,7 +1,7 @@
-export type UserSuggestion = {
-  login: string;
-  avatar_url: string;
-  html_url: string;
+export type UserSuggestion = Pick<GithubUser, "login" | "avatar_url" | "html_url">;
+
+export type GithubUserSearchResponse = {
+  items: UserSuggestion[];
 }
 
 export type GithubUser = {
