@@ -35,23 +35,23 @@ export const fetchUserData = async (username: string) => {
     const result = await res.json();
     return result as GithubUser;
   } catch (error) {
-    if (error instanceof DOMException && error.name === "AbortError") return null;
-    throw Error
+    if (error instanceof DOMException && error.name === "AbortError")
+      return null;
+    throw Error;
   }
 };
 
-
 /**
  * Fetches a single page of repositories for a given GitHub user.
- * 
+ *
  * Pagination:
  * - Uses `page` (1-based) and (default 10, max 100).
  * - Inspects the HTTP `Link` response header; if it contains `rel="next"`,
  *   `hasNextPage` will be `true`, otherwise `false`.
- * 
+ *
  * Errors:
  * - On network or HTTP errors, it logs to the console and returns `{ data: [], hasNextPage: false }`.
- * 
+ *
  * @param username - Github username (whitespace is trimmed).
  * @param opts - Optional setting:
  *    @property page    - Page number (1-based). Default: 1.
@@ -87,14 +87,13 @@ export const fetchUserRepos = async (
 
     const data = (await res.json()) as GithubRepo[];
 
-     // GitHub paginates with the 'Link' header; rel="next" indicates more pages.
+    // GitHub paginates with the 'Link' header; rel="next" indicates more pages.
     const link = res.headers.get("Link") || "";
     const hasNextPage = /rel="next"/.test(link);
 
     return { data: Array.isArray(data) ? data : [], hasNextPage };
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") {
-
       return { data: [], hasNextPage: false };
     }
     console.error("Error fetching user repositories: ", error);
@@ -105,18 +104,18 @@ export const fetchUserRepos = async (
 /**
  * Fetches ALL repositories for a user by walking through pages.
  * Uses `perPage=100` to minimize requests.
- * 
+ *
  * Notes:
  * - This is a high-level convenience API built on top of `fetchUserRepos`.
  * - Prefer this in the UI if you want filters to operate on the full dataset
  *   and keep the UI pagination purely local.
  * @param username
- * @param opts 
- * @returns 
+ * @param opts
+ * @returns
  */
 export const fetchAllUserRepos = async (
   username: string,
-  opts?: {perPage?: number; signal?: AbortSignal }
+  opts?: { perPage?: number; signal?: AbortSignal }
 ): Promise<GithubRepo[]> => {
   const perPage = opts?.perPage ?? 100;
   if (!username.trim()) return [];
@@ -136,7 +135,7 @@ export const fetchAllUserRepos = async (
   }
 
   return all;
-}
+};
 
 /**
  * Searches GitHub users for the given query and returns a simplified list

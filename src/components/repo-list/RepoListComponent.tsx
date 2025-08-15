@@ -5,9 +5,13 @@ import RepoCardComponent from "../repo-card/RepoCardComponent";
 type Props = { repos: GithubRepo[] };
 
 const RepoListComponent = ({ repos }: Props) => {
-
   if (!repos || repos.length === 0) {
-    return <EmptyStateComponent />
+    return (
+      <EmptyStateComponent
+        title="No repositories match your filters"
+        description="Adjust the search or language filter."
+      />
+    );
   }
 
   return (

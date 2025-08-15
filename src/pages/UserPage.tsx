@@ -118,7 +118,10 @@ const UserPage = () => {
       />
     );
   }
-  if (!user) return <EmptyStateComponent />;
+  if (!user) {
+    return (<EmptyStateComponent title="User not found" />
+    );
+  }
 
   return (
     <>
