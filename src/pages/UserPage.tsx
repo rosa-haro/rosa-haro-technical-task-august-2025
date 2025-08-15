@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import RepoListComponent from "../components/repo-list/RepoListComponent";
 import UserInfoComponent from "../components/user-info/UserInfoComponent";
 import { fetchAllUserRepos, fetchUserData } from "../core/api/github";
@@ -104,13 +104,24 @@ const UserPage = () => {
   }, [repoQuery, language]);
 
   const reposVisible = useMemo(
-    () => reposFiltered.slice(0, visibleCount), 
-    [reposFiltered, visibleCount]);
+    () => reposFiltered.slice(0, visibleCount),
+    [reposFiltered, visibleCount]
+  );
 
-
-  if (loading) return <LoaderComponent />;
-  if (error) return <ErrorStateComponent />; //msg={error}
-  if (!user) return <EmptyStateComponent />;
+  if (loading)
+    return <LoaderComponent label="Loading user and repositories..." />;
+  if (error) {
+    return (
+      <ErrorStateComponent
+        message="Failed to load user data and repositories."
+        action={<Link to="/">Back to search</Link>}
+      />
+    );
+  }
+  if (!user) {
+    return (<EmptyStateComponent title="User not found" />
+    );
+  }
 
   return (
     <>
@@ -126,7 +137,8 @@ const UserPage = () => {
       {reposFiltered.length > visibleCount && (
         <div>
           <button
-            onClick={() => setVisibleCount((c) => c + VISIBLE_REPOS_STEP)}>
+            onClick={() => setVisibleCount((c) => c + VISIBLE_REPOS_STEP)}
+          >
             Show more
           </button>
         </div>
