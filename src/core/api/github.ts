@@ -26,6 +26,8 @@ export const fetchUserData = async (username: string) => {
       }
     );
 
+    if (res.status === 404) return null;
+
     if (!res.ok) {
       throw new Error(`Error ${res.status}`);
     }
@@ -33,8 +35,8 @@ export const fetchUserData = async (username: string) => {
     const result = await res.json();
     return result as GithubUser;
   } catch (error) {
-    console.error("Error fetching user data:", error);
-    return null;
+    if (error instanceof DOMException && error.name === "AbortError") return null;
+    throw Error
   }
 };
 
@@ -80,9 +82,8 @@ export const fetchUserRepos = async (
       }
     );
 
-    if (!res.ok) {
-      throw new Error(`Error ${res.status}`);
-    }
+    if (res.status === 404) return { data: [], hasNextPage: false };
+    if (!res.ok) throw new Error(`Error ${res.status}`);
 
     const data = (await res.json()) as GithubRepo[];
 
