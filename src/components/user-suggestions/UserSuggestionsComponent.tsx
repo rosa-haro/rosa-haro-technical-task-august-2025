@@ -30,7 +30,7 @@ type Props = {
   emptyText?: string;
 };
 
-const SearchSuggestionsComponent = ({
+const UserSuggestionsComponent = ({
   items,
   activeIndex,
   onSelect,
@@ -67,4 +67,4 @@ const SearchSuggestionsComponent = ({
   );
 };
 
-export default SearchSuggestionsComponent;
+export default UserSuggestionsComponent;

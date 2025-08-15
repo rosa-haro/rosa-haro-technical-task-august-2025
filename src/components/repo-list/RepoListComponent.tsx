@@ -1,4 +1,5 @@
 import type { GithubRepo } from "../../core/types/github";
+import EmptyStateComponent from "../empty-state/EmptyStateComponent";
 import RepoCardComponent from "../repo-card/RepoCardComponent";
 
 type Props = { repos: GithubRepo[] };
@@ -6,7 +7,7 @@ type Props = { repos: GithubRepo[] };
 const RepoListComponent = ({ repos }: Props) => {
 
   if (!repos || repos.length === 0) {
-    return <p>No repositories found.</p>
+    return <EmptyStateComponent />
   }
 
   return (
