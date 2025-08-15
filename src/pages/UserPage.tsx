@@ -108,7 +108,7 @@ const UserPage = () => {
     [reposFiltered, visibleCount]);
 
 
-  if (loading) return <LoaderComponent />;
+  if (loading) return <LoaderComponent label="Loading user and repositories..." />;
   if (error) return <ErrorStateComponent />; //msg={error}
   if (!user) return <EmptyStateComponent />;
 
