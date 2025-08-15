@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import LanguageFilterComponent from "../components/language-filter/LanguageFilterComponent";
 import RepoListComponent from "../components/repo-list/RepoListComponent";
 import UserInfoComponent from "../components/user-info/UserInfoComponent";
 import { fetchUserData, fetchUserRepos } from "../core/api/github";
@@ -7,6 +6,7 @@ import { useEffect, useState } from "react";
 import type { GithubRepo, GithubUser } from "../core/types/github";
 import LoaderComponent from "../components/loader/LoaderComponent";
 import ErrorStateComponent from "../components/error-state/ErrorStateComponent";
+import RepoFiltersComponent from "../components/repo-filters/RepoFiltersComponent";
 
 const UserPage = () => {
   const { username } = useParams<{ username: string }>();
@@ -44,7 +44,7 @@ const UserPage = () => {
   return (
     <>
       <UserInfoComponent user={user}/>
-      <LanguageFilterComponent />
+      <RepoFiltersComponent />
       <RepoListComponent repos={repos} />
     </>
   );
