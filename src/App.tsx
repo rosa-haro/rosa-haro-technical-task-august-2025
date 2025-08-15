@@ -1,8 +1,15 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import UserPage from "./pages/UserPage";
+
 function App() {
   return (
-    <>
-      <h1>MVST — GitHub Repos Viewer</h1>
-    </>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/user/:username" element={<UserPage />} />
+        </Routes>
+      </BrowserRouter>
   );
 }
 
