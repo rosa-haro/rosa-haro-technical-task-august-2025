@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import LanguageFilterComponent from "../components/language-filter/LanguageFilterComponent";
 import RepoListComponent from "../components/repo-list/RepoListComponent";
-import SearchBarComponent from "../components/search-bar/SearchBarComponent";
 import UserInfoComponent from "../components/user-info/UserInfoComponent";
 import { fetchUserData, fetchUserRepos } from "../core/api/github";
 import { useEffect, useState } from "react";
@@ -45,7 +44,6 @@ const UserPage = () => {
   return (
     <>
       <UserInfoComponent user={user}/>
-      <SearchBarComponent/>
       <LanguageFilterComponent />
       <RepoListComponent repos={repos} />
     </>

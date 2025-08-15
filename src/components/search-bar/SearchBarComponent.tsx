@@ -1,75 +1,44 @@
-import { useNavigate } from "react-router-dom";
-import type { UserSuggestion } from "../../core/types/github";
-import SearchSuggestionsComponent from "../search-suggestions/SearchSuggestionsComponent";
-import { useUserSuggestions } from "../../core/hooks/useUserSuggestions";
+import { type ChangeEvent, type FormEvent, type KeyboardEvent } from "react";
 
-const SearchBarComponent = () => {
-  const navigate = useNavigate();
+type Props = {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  placeholder: string;
+  ariaLabel?: string;
+  ariaActivedescendant?: string;
+  autoComplete?: string;
+};
 
-  const {
-    query,
-    items,
-    isOpen,
-    activeIndex,
-    listboxId,
-    setActiveIndex,
-    onChange,
-    onKeyDown,
-    onSubmit,
-    onSelect,
-  } = useUserSuggestions();
-
-  const goToUser = (username: string) => {
-    navigate(`/user/${encodeURIComponent(username)}`);
-  };
-
-  const handleSelect = (item: UserSuggestion) => {
-    onSelect(item, (i) => goToUser(i.login));
-  };
-
+const SearchBarComponent = ({
+  value,
+  onChange,
+  onKeyDown,
+  onSubmit,
+  placeholder,
+  ariaLabel = "Search",
+  ariaActivedescendant,
+  autoComplete = "off",
+}: Props) => {
   return (
-    <div
-      role="combobox"
-      aria-haspopup="listbox"
-      aria-expanded={isOpen}
-      aria-controls={listboxId}
-      aria-owns={listboxId}
-    >
-      <form onSubmit={(e) => onSubmit(e, { onSubmit: goToUser })}>
-        <input
-          type="text"
-          inputMode="search"
-          enterKeyHint="search"
-          placeholder="Search by username"
-          value={query}
-          onChange={onChange}
-          onKeyDown={(e) =>
-            onKeyDown(e, {
-              onSelect: (item) => goToUser(item.login),
-              onSubmit: goToUser,
-            })
-          }
-          aria-label="GitHub username"
-          aria-autocomplete="list"
-          aria-activedescendant={
-            isOpen ? `suggestion-${activeIndex}` : undefined
-          }
-          autoComplete="off"
-        />
-        <button type="submit" disabled={!query.trim()}>
-          Search
-        </button>
-      </form>
-
-      {isOpen && (
-        <SearchSuggestionsComponent
-          items={items}
-          activeIndex={activeIndex}
-          onSelect={handleSelect}
-          onHover={setActiveIndex}
-        />
-      )}
-    </div>
+    <form onSubmit={onSubmit}>
+      <input
+        type="text"
+        inputMode="search"
+        enterKeyHint="search"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        aria-label={ariaLabel}
+        aria-activedescendant={ariaActivedescendant}
+        autoComplete={autoComplete}
+      />
+      <button type="submit" disabled={!value.trim()}>
+        Search{" "}
+      </button>
+    </form>
   );
 };
 

@@ -1,10 +1,10 @@
-import SearchBarComponent from "../components/search-bar/SearchBarComponent";
+import UserSearchComponent from "../components/user-search-component/UserSearchComponent";
 
 const HomePage = () => {
   return (
     <>
       <h1>GitHub Repo Searcher</h1>
-      <SearchBarComponent />
+      <UserSearchComponent />
     </>
   );
 };
