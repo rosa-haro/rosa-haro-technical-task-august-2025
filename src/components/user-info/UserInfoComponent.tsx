@@ -9,7 +9,8 @@ const UserInfoComponent = ({ user }: Props) => {
   return (
     <section className="card-base p-4" aria-label="User profile">
 
-        <div className="flex items-center gap-3 lg:flex-col lg:gap-4 lg:text-center">
+        <div className="flex flex-col gap-3 lg:gap-4 lg:text-center">
+        <div className="flex items-center gap-3 lg:flex-col lg:gap-4">
           <img
             src={user.avatar_url}
             alt={`${user.login}'s avatar`}
@@ -24,12 +25,12 @@ const UserInfoComponent = ({ user }: Props) => {
               href={user.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[color:var(--color-muted)] truncate-1"
+              className="text-[color:var(--color-muted)] block truncate"
             >
               @{user.login}
             </a>
           </div>
-   
+   </div>
 
         {user.bio && (
           <p className="text-[length:var(--font-body)] truncate-2">
@@ -37,7 +38,7 @@ const UserInfoComponent = ({ user }: Props) => {
           </p>
         )}
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 justify-start lg:justify-center">
           <span className="badge-accent">Followers {user.followers}</span>
           <span className="badge-accent">Following {user.following}</span>
         </div>
