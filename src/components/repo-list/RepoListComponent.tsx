@@ -10,16 +10,23 @@ const RepoListComponent = ({ repos }: Props) => {
       <EmptyStateComponent
         title="No repositories match your filters"
         description="Adjust the search or language filter."
+        className="col-span-full card-base p-8 text-center"
       />
     );
   }
 
   return (
-    <div>
+    <section aria-label="Repositories">
+      <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-6">
       {repos.map((r) => (
-        <RepoCardComponent key={r.id} repo={r} />
+        <li key={r.id}>
+
+          <RepoCardComponent repo={r} />
+        </li>
       ))}
-    </div>
+
+      </ul>
+    </section>
   );
 };
 

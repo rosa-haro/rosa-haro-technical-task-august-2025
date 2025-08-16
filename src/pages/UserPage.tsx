@@ -17,7 +17,7 @@ import EmptyStateComponent from "../components/empty-state/EmptyStateComponent";
  */
 
 /** How many filtered repositories are currently visible (local paging). */
-const VISIBLE_REPOS_STEP = 10;
+const VISIBLE_REPOS_STEP = 12;
 
 const UserPage = () => {
   const { username } = useParams<{ username: string }>();
@@ -141,6 +141,7 @@ const UserPage = () => {
           <div>
             <button
               onClick={() => setVisibleCount((c) => c + VISIBLE_REPOS_STEP)}
+              className="button-ghost w-full mt-2"
             >
               Show more
             </button>
