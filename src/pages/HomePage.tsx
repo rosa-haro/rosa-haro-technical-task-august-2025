@@ -5,10 +5,6 @@ const HomePage = () => {
     <>
       <h1>GitHub Repo Searcher</h1>
       <UserSearchComponent />
-      <div className="bg-blue-500 text-white p-4 rounded">
-  Tailwind is working! 🎉
-</div>
-
     </>
   );
 };
