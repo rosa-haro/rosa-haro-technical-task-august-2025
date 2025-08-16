@@ -1,5 +1,1 @@
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  line-height: 1.5;
-}
+@import "tailwindcss";
