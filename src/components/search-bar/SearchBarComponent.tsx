@@ -9,7 +9,6 @@ type Props = {
   ariaLabel?: string;
   ariaActivedescendant?: string;
   autoComplete?: string;
-  className?: string;
 };
 
 const SearchBarComponent = ({
@@ -21,10 +20,9 @@ const SearchBarComponent = ({
   ariaLabel = "Search",
   ariaActivedescendant,
   autoComplete = "off",
-  className,
 }: Props) => {
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="relative w-full flex items-center gap-2">
       <input
         type="text"
         inputMode="search"
@@ -36,10 +34,10 @@ const SearchBarComponent = ({
         aria-label={ariaLabel}
         aria-activedescendant={ariaActivedescendant}
         autoComplete={autoComplete}
-        className={className}
+        className="input-base flex-1"
       />
-      <button type="submit" disabled={!value.trim()}>
-        Search{" "}
+      <button type="submit" disabled={!value.trim()} className="button-primary disabled:opacity-50 disabled:cursor-not-allowed">
+        Search
       </button>
     </form>
   );

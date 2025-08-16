@@ -54,7 +54,6 @@ const RepoFiltersComponent = ({
           }}
           placeholder="Search repositories by name..."
           ariaLabel="Repositories search"
-          className="input-base"
         />
       </div>
       <LanguageFilterComponent
