@@ -119,31 +119,35 @@ const UserPage = () => {
     );
   }
   if (!user) {
-    return (<EmptyStateComponent title="User not found" />
-    );
+    return <EmptyStateComponent title="User not found" />;
   }
 
   return (
-    <>
-      <UserInfoComponent user={user} />
-      <RepoFiltersComponent
-        repoQuery={repoQuery}
-        onQuerySubmit={setRepoQuery}
-        language={language}
-        languageOptions={languageOptions}
-        onLanguageChange={setLanguage}
-      />
-      <RepoListComponent repos={reposVisible} />
-      {reposFiltered.length > visibleCount && (
-        <div>
-          <button
-            onClick={() => setVisibleCount((c) => c + VISIBLE_REPOS_STEP)}
-          >
-            Show more
-          </button>
-        </div>
-      )}
-    </>
+    <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-6">
+      <section className="card-base p-4">
+        <UserInfoComponent user={user} />
+      </section>
+      <section className="flex flex-col gap-4">
+        <RepoFiltersComponent
+          repoQuery={repoQuery}
+          onQuerySubmit={setRepoQuery}
+          language={language}
+          languageOptions={languageOptions}
+          onLanguageChange={setLanguage}
+        />
+
+        <RepoListComponent repos={reposVisible} />
+        {reposFiltered.length > visibleCount && (
+          <div>
+            <button
+              onClick={() => setVisibleCount((c) => c + VISIBLE_REPOS_STEP)}
+            >
+              Show more
+            </button>
+          </div>
+        )}
+      </section>
+    </main>
   );
 };
 
