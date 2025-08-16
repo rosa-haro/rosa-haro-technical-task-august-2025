@@ -18,11 +18,12 @@ type Props = {
   const LanguageFilterComponent = ({ value, options, onChange }: Props) => {
   return (
     <label>
-      Main language{" "}
+      Main language
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
         aria-label="Filter by language"
+        className="input-base pr-8 appearance-none bg-[image:var(--tw-select-indicator,none)]"
         >
 
           {options.map((opt) => (

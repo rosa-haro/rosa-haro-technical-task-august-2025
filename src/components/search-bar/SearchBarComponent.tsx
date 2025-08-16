@@ -9,6 +9,7 @@ type Props = {
   ariaLabel?: string;
   ariaActivedescendant?: string;
   autoComplete?: string;
+  className?: string;
 };
 
 const SearchBarComponent = ({
@@ -20,6 +21,7 @@ const SearchBarComponent = ({
   ariaLabel = "Search",
   ariaActivedescendant,
   autoComplete = "off",
+  className,
 }: Props) => {
   return (
     <form onSubmit={onSubmit}>
@@ -34,6 +36,7 @@ const SearchBarComponent = ({
         aria-label={ariaLabel}
         aria-activedescendant={ariaActivedescendant}
         autoComplete={autoComplete}
+        className={className}
       />
       <button type="submit" disabled={!value.trim()}>
         Search{" "}
