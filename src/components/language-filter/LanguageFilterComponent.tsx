@@ -18,7 +18,7 @@ type Props = {
   const LanguageFilterComponent = ({ value, options, onChange }: Props) => {
   return (
     <label className="flex items-center gap-2 text-[color:var(--color-muted)] text-[length:var(--font-meta)]">
-      Language
+      Choose a language: 
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
