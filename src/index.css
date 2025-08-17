@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #0D1117;
-  --color-surface: #161B22;
+  --color-bg: #0d1117;
+  --color-surface: #161b22;
   --color-border: #212830;
   --color-primary: #9c27b0;
   --color-primary-700: #7b1fa2;
@@ -66,15 +66,15 @@ body {
 
 /* Botón cuadrado solo icono: sin padding y con svg grande */
 .button-primary--search-icon {
-  padding: 0 !important;      
-  width: 2.5rem;              
+  padding: 0 !important;
+  width: 2.5rem;
   height: 2.5rem;
 }
 
 .button-primary--search-icon > svg {
-  width: 1.5rem !important;      
-  height: 1.5rem !important;      
-  flex: none;                 
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+  flex: none;
 }
 
 .button-secondary {
@@ -84,9 +84,8 @@ body {
            border border-[var(--color-border)]
            bg-white/5
            text-[color:var(--color-text)]
-           transition-all;
-           
-  @apply hover:bg-[var(--color-border)] hover:text-white;
+           transition-all
+           hover:bg-[var(--color-border)] hover:text-white;
 }
 
 .button-ghost {
@@ -127,23 +126,22 @@ body {
 
 /* HEADER GLASS OVERLAY */
 .header-glass {
-    position: sticky;
-    top: 0;
-    z-index: 30;
-    overflow: visible;
-
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  overflow: visible;
 }
 
 .header-glass::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgb(1 4 9 / var(--header-overlay-opacity));
-    backdrop-filter: blur(8px) saturate(1.4) brightness(0.95);
-    z-index: 0;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(1 4 9 / var(--header-overlay-opacity));
+  backdrop-filter: blur(8px) saturate(1.4) brightness(0.95);
+  z-index: 0;
 }
 
 .header-glass > .inner {
-    position: relative;
-    z-index: 1;
+  position: relative;
+  z-index: 1;
 }
