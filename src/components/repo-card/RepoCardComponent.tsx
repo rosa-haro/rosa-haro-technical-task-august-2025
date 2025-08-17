@@ -3,6 +3,7 @@ import { timeAgo } from "../../core/utils/time";
 import CircleIcon from "../../assets/icons/circle.svg?react";
 import StarIcon from "../../assets/icons/star.svg?react";
 import ForkIcon from "../../assets/icons/fork.svg?react";
+import { getLanguageColor } from "../../core/utils/languageColors";
 
 type Props = { repo: GithubRepo };
 
@@ -37,7 +38,7 @@ const RepoCardComponent = ({ repo }: Props) => {
         <div className="flex items-center gap-2 flex-wrap">
           {repo.language && (
             <div className="inline-flex items-center gap-1 rounded-full bg-white/5 px-2 py-0.5">
-              <CircleIcon className="h-2 w-2 fill-current"/>
+              <CircleIcon className="h-2.5 w-2.5 fill-current" style={{ color: getLanguageColor(repo.language)}} aria-hidden={true}/>
               <span className="truncate-1">{repo.language}</span>
             </div>
           )}
@@ -45,14 +46,14 @@ const RepoCardComponent = ({ repo }: Props) => {
           {repo.stargazers_count > 0 && (
             <div className="inline-flex items-center gap-1 rounded-full bg-white/5 px-2 py-0.5 text-[color:var(--color-text)]/90">
               <StarIcon className="h-4 w-4 text-[#ffc107] fill-current" />
-              <span>{repo.stargazers_count}</span>
+              <span aria-label="Startgazers count">{repo.stargazers_count}</span>
             </div>
           )}
 
           {repo.forks > 0 && (
             <div className="inline-flex items-center gap-1 rounded-full bg-white/5 px-2 py-0.5 text-[color:var(--color-text)]/90">
               <ForkIcon className="h-4 w-4 text-[color:var(--color-muted)] fill-current" />
-              <span>{repo.forks}</span>
+              <span aria-label="Forks count">{repo.forks}</span>
             </div>
           )}
         </div>
