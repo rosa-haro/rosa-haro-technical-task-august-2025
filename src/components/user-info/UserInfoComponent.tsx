@@ -44,23 +44,12 @@ const UserInfoComponent = ({ user }: Props) => {
           <span className="badge-accent">Following {user.following}</span>
         </div>
 
-        {(user.location || user.email || blogUrl) && (
+        {(user.location || blogUrl) && (
           <ul className="space-y-1">
             {user.location && (
               <li className="text-[length:var(--font-body)] truncate-1 flex items-start lg:justify-center gap-1">
                 <span><LocationIcon className="h-5 w-5" /></span>
                 <span>{user.location}</span>
-              </li>
-            )}
-
-            {user.email && (
-              <li className="text-[length:var(--font-body)]">
-                <a
-                  href={`mailto:${user.email}`}
-                  className="underline decoration-white/40 underline-offset-2 hover:decoration-white truncate-1"
-                >
-                  {user.email}
-                </a>
               </li>
             )}
 
