@@ -39,9 +39,9 @@ const UserSuggestionsComponent = ({
   const hasItems = items && items.length > 0;
 
   return (
-    <ul id="user-suggestions" role="listbox" aria-label="User suggestions">
+    <ul id="user-suggestions" role="listbox" aria-label="User suggestions" className="absolute z-20 mt-2 w-full card-base p-1 max-h-72 overflow-y-auto">
       {!hasItems ? (
-        <li role="option" aria-disabled="true">
+        <li role="option" aria-disabled="true" className="px-3 py-2 text-[color:var(--color-muted)]">
           No results
         </li>
       ) : (
@@ -56,10 +56,11 @@ const UserSuggestionsComponent = ({
               onSelect(item);
             }}
             onMouseEnter={() => onHover?.(idx)}
-            style={idx === activeIndex ? { background: "#eef6ff" } : undefined} //TODO: just to test, erase later
+            className={`flex items-center gap-3 px-3 py-2 rounded-[var(--radius-md)] cursor-pointer
+              ${idx === activeIndex ? "bg-white/10" : "hover:bg-white/5 focus-visible:bg-white/10"}`}
           >
-            <img src={item.avatar_url} alt="" width={20} height={20} />
-            <span>{item.login}</span>
+            <img src={item.avatar_url} alt="" className="h-6 w-6 rounded-full border border-[var(--color-border)]" />
+            <span className="truncate">{item.login}</span>
           </li>
         ))
       )}

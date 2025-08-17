@@ -70,6 +70,7 @@ const UserSearchComponent = () => {
     aria-haspopup="listbox"
     aria-expanded={isOpen}
     aria-controls={listboxId}
+    className="relative w-full"
   >
       <SearchBarComponent 
       value={query}

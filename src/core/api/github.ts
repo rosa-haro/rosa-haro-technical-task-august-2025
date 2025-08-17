@@ -45,7 +45,7 @@ export const fetchUserData = async (username: string) => {
  * Fetches a single page of repositories for a given GitHub user.
  *
  * Pagination:
- * - Uses `page` (1-based) and (default 10, max 100).
+ * - Uses `page` (1-based) and (default 30, max 100).
  * - Inspects the HTTP `Link` response header; if it contains `rel="next"`,
  *   `hasNextPage` will be `true`, otherwise `false`.
  *

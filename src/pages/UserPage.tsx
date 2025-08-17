@@ -17,7 +17,7 @@ import EmptyStateComponent from "../components/empty-state/EmptyStateComponent";
  */
 
 /** How many filtered repositories are currently visible (local paging). */
-const VISIBLE_REPOS_STEP = 10;
+const VISIBLE_REPOS_STEP = 12;
 
 const UserPage = () => {
   const { username } = useParams<{ username: string }>();
@@ -119,31 +119,41 @@ const UserPage = () => {
     );
   }
   if (!user) {
-    return (<EmptyStateComponent title="User not found" />
-    );
-  }
+    return (
+      <div className="min-h-[80vh] grid place-items-center">
+        <EmptyStateComponent title="User not found" className="card-base mx-auto max-w-md px-10 py-8 text-center text-lg"/>
+
+      </div>
+    )
+}
 
   return (
-    <>
-      <UserInfoComponent user={user} />
-      <RepoFiltersComponent
-        repoQuery={repoQuery}
-        onQuerySubmit={setRepoQuery}
-        language={language}
-        languageOptions={languageOptions}
-        onLanguageChange={setLanguage}
-      />
-      <RepoListComponent repos={reposVisible} />
-      {reposFiltered.length > visibleCount && (
-        <div>
-          <button
-            onClick={() => setVisibleCount((c) => c + VISIBLE_REPOS_STEP)}
-          >
-            Show more
-          </button>
-        </div>
-      )}
-    </>
+    <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-8 items-start">
+      <section className="card-base p-4">
+        <UserInfoComponent user={user} />
+      </section>
+      <section className="flex flex-col gap-8">
+        <RepoFiltersComponent
+          repoQuery={repoQuery}
+          onQuerySubmit={setRepoQuery}
+          language={language}
+          languageOptions={languageOptions}
+          onLanguageChange={setLanguage}
+        />
+
+        <RepoListComponent repos={reposVisible} />
+        {reposFiltered.length > visibleCount && (
+          <div>
+            <button
+              onClick={() => setVisibleCount((c) => c + VISIBLE_REPOS_STEP)}
+              className="button-ghost w-full mt-2"
+            >
+              Show more
+            </button>
+          </div>
+        )}
+      </section>
+    </main>
   );
 };
 
