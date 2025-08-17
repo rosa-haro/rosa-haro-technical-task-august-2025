@@ -27,17 +27,17 @@ export const fetchUserData = async (username: string) => {
     );
 
     if (res.status === 404) return null;
-
     if (!res.ok) {
       throw new Error(`Error ${res.status}`);
     }
 
     const result = await res.json();
     return result as GithubUser;
-  } catch (error) {
-    if (error instanceof DOMException && error.name === "AbortError")
+  } catch (error: unknown) {
+    if (error instanceof DOMException && error.name === "AbortError") {
       return null;
-    throw Error;
+    }
+    throw error;
   }
 };
 
@@ -92,11 +92,10 @@ export const fetchUserRepos = async (
     const hasNextPage = /rel="next"/.test(link);
 
     return { data: Array.isArray(data) ? data : [], hasNextPage };
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof DOMException && error.name === "AbortError") {
       return { data: [], hasNextPage: false };
     }
-    console.error("Error fetching user repositories: ", error);
     return { data: [], hasNextPage: false };
   }
 };
@@ -185,8 +184,10 @@ export const searchUserFetch = async (
       avatar_url,
       html_url,
     }));
-  } catch (error) {
-    console.error("Error searching users:", error);
+  } catch (error: unknown) {
+    if (error instanceof DOMException && error.name === "AbortError") {
+      return [];
+    }
     return [];
   }
 };

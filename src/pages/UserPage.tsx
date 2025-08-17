@@ -56,7 +56,7 @@ const UserPage = () => {
 
         setUser(userData);
         setRepos(repos);
-      } catch (error) {
+      } catch (error: unknown) {
         if (!(error instanceof DOMException && error.name === "AbortError")) {
           setError((error as Error).message || "Unexpected error");
         }

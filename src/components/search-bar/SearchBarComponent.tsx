@@ -38,7 +38,7 @@ const SearchBarComponent = ({
         className="input-base flex-1"
       />
       <button type="submit" disabled={!value.trim()} className="button-primary button-primary--search-icon h-9 w-9 p-0 flex items-center justify-center 
-                   disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Search">
+                   disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none" aria-label="Search">
         <SearchIcon aria-hidden={true}/>
       </button>
     </form>
