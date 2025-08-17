@@ -119,8 +119,13 @@ const UserPage = () => {
     );
   }
   if (!user) {
-    return <EmptyStateComponent title="User not found" />;
-  }
+    return (
+      <div className="min-h-[80vh] grid place-items-center">
+        <EmptyStateComponent title="User not found" className="card-base mx-auto max-w-md px-10 py-8 text-center text-lg"/>
+
+      </div>
+    )
+}
 
   return (
     <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-8 items-start">

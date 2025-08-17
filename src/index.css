@@ -7,7 +7,7 @@
   --color-primary: #9c27b0;
   --color-primary-700: #7b1fa2;
   --color-accent: #e1bee7;
-  --color-warn: #ffc107;
+  --color-star: #ffc107;
   --color-success: #22c55e;
   --color-danger: #ef4444;
   --color-text: #ffffff;
@@ -75,6 +75,18 @@ body {
   width: 1.5rem !important;      
   height: 1.5rem !important;      
   flex: none;                 
+}
+
+.button-secondary {
+  @apply inline-flex items-center justify-center gap-2
+           rounded-[var(--radius-md)] 
+           px-3 py-2
+           border border-[var(--color-border)]
+           bg-white/5
+           text-[color:var(--color-text)]
+           transition-all;
+           
+  @apply hover:bg-[var(--color-border)] hover:text-white;
 }
 
 .button-ghost {

@@ -9,7 +9,7 @@ type Props = {
 }
 const LoaderComponent = ({
   label = "Loading",
-  size = 20,
+  size = 40,
   color = "currentColor",
   className,
   hideLabel = false,
@@ -17,9 +17,15 @@ const LoaderComponent = ({
   return (
     <div role="status"
     aria-label={hideLabel ? label : undefined}
-    className={className}
+    className={["min-h-[40vh] grid place-items-center", className ?? "",].join(" ")}
     >
+      <div className="flex flex-col items-center gap-4 text-[color:var(--color-muted)]">
+
       <ClipLoader size={size} color={color} />
+      {!hideLabel && (
+        <span className="text-[length:var(--font-h2)]">{label}</span>
+      )}
+      </div>
     </div>
   )
 }
