@@ -36,8 +36,9 @@ const SearchBarComponent = ({
         autoComplete={autoComplete}
         className="input-base flex-1"
       />
-      <button type="submit" disabled={!value.trim()} className="button-primary disabled:opacity-50 disabled:cursor-not-allowed">
-        Search
+      <button type="submit" disabled={!value.trim()} className="button-primary h-9 w-9 p-0 flex items-center justify-center 
+                   disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Search">
+        S
       </button>
     </form>
   );
