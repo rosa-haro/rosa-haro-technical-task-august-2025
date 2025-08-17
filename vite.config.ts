@@ -1,7 +1,20 @@
 import { defineConfig } from 'vite'
+import svgr from 'vite-plugin-svgr'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    svgr({
+      svgrOptions: {     
+        svgo: true,
+        svgoConfig: {
+          plugins: [
+            { name: 'removeDimensions' },            
+            { name: 'removeAttrs', params: { attrs: '(fill|stroke)' } }, 
+          ],
+        },
+      },
+    }),
+    react(),
+  ],
 })

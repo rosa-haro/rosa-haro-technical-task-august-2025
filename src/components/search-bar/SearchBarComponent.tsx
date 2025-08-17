@@ -1,4 +1,5 @@
 import { type ChangeEvent, type FormEvent, type KeyboardEvent } from "react";
+import SearchIcon from "../../assets/icons/search.svg?react"
 
 type Props = {
   value: string;
@@ -36,9 +37,9 @@ const SearchBarComponent = ({
         autoComplete={autoComplete}
         className="input-base flex-1"
       />
-      <button type="submit" disabled={!value.trim()} className="button-primary h-9 w-9 p-0 flex items-center justify-center 
+      <button type="submit" disabled={!value.trim()} className="button-primary button-primary--search-icon h-9 w-9 p-0 flex items-center justify-center 
                    disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Search">
-        S
+        <SearchIcon aria-hidden={true}/>
       </button>
     </form>
   );

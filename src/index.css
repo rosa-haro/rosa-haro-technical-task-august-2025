@@ -64,6 +64,20 @@ body {
            disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
+/* Botón cuadrado solo icono: sin padding y con svg grande */
+.button-primary--search-icon {
+  padding: 0 !important;      
+  width: 2.25rem;              
+  height: 2.25rem;
+}
+
+.button-primary--search-icon > svg {
+  width: 1.5rem !important;      
+  height: 1.5rem !important;      
+  flex: none;                 
+}
+
+
 .button-ghost {
   @apply inline-flex items-center justify-center gap-2
            rounded-[var(--radius-md)] bg-transparent

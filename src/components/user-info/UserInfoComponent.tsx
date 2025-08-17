@@ -1,5 +1,6 @@
 import type { GithubUser } from "../../core/types/github";
 import { normalizeUrl } from "../../core/utils/url";
+import LocationIcon from "../../assets/icons/location.svg?react";
 
 type Props = { user: GithubUser };
 
@@ -46,8 +47,9 @@ const UserInfoComponent = ({ user }: Props) => {
         {(user.location || user.email || blogUrl) && (
           <ul className="space-y-1">
             {user.location && (
-              <li className="text-[length:var(--font-body)] truncate-1">
-                {user.location}
+              <li className="text-[length:var(--font-body)] truncate-1 flex items-start lg:justify-center gap-1">
+                <span><LocationIcon className="h-5 w-5" /></span>
+                <span>{user.location}</span>
               </li>
             )}
 
