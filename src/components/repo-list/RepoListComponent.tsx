@@ -8,8 +8,7 @@ const RepoListComponent = ({ repos }: Props) => {
   if (!repos || repos.length === 0) {
     return (
       <EmptyStateComponent
-        title="No repositories match your filters"
-        description="Adjust the search or language filter."
+        title="No repositories match your filters."
         className="col-span-full card-base p-8 text-center"
       />
     );

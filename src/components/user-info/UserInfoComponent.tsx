@@ -26,7 +26,7 @@ const UserInfoComponent = ({ user }: Props) => {
               href={user.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[color:var(--color-muted)] block truncate"
+              className="text-[color:var(--color-muted)] block truncate hover:underline decoration-white/40 underline-offset-2"
             >
               @{user.login}
             </a>
@@ -34,7 +34,7 @@ const UserInfoComponent = ({ user }: Props) => {
    </div>
 
         {user.bio && (
-          <p className="text-[length:var(--font-body)] text-center whitespace-pre-wrap break-words">
+          <p className="text-[length:var(--font-body)] text-left lg:text-center whitespace-pre-wrap break-words">
             {user.bio}
           </p>
         )}

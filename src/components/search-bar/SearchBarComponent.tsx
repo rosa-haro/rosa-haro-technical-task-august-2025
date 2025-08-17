@@ -23,7 +23,7 @@ const SearchBarComponent = ({
   autoComplete = "off",
 }: Props) => {
   return (
-    <form onSubmit={onSubmit} className="relative w-full flex items-center gap-2">
+    <form onSubmit={onSubmit} className="relative w-full flex items-center gap-1">
       <input
         type="text"
         inputMode="search"

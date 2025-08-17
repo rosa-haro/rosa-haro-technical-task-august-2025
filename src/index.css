@@ -44,7 +44,7 @@ body {
 
 .input-base {
   @apply w-full bg-transparent border border-[var(--color-border)]
-           rounded-[var(--radius-md)] px-3 py-2
+           rounded-[var(--radius-md)] px-4 py-2
            text-[length:var(--font-body)]
            placeholder:text-[color:var(--color-muted)]
            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset
@@ -67,8 +67,8 @@ body {
 /* Botón cuadrado solo icono: sin padding y con svg grande */
 .button-primary--search-icon {
   padding: 0 !important;      
-  width: 2.25rem;              
-  height: 2.25rem;
+  width: 2.5rem;              
+  height: 2.5rem;
 }
 
 .button-primary--search-icon > svg {
@@ -76,7 +76,6 @@ body {
   height: 1.5rem !important;      
   flex: none;                 
 }
-
 
 .button-ghost {
   @apply inline-flex items-center justify-center gap-2
@@ -93,8 +92,9 @@ body {
 }
 
 .badge-accent {
-  @apply inline-flex items-center rounded-full px-2 py-0.5
+  @apply inline-flex items-center rounded-full px-2.25 py-0.5
            text-[length:var(--font-meta)]
+           font-medium
            bg-[var(--color-accent)] text-[#0D1117];
 }
 
@@ -118,7 +118,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 30;
-    overflow: hidden;
+    overflow: visible;
 
 }
 

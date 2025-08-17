@@ -43,7 +43,7 @@ const RepoFiltersComponent = ({
   const [query, setQuery] = useState(repoQuery);
 
   return (
-    <div className="card-base p-3 flex flex-col md:flex-row gap-3 md:items-center">
+    <div className="card-base p-4 flex flex-col md:flex-row gap-4 md:items-center">
       <div className="flex-1">
         <SearchBarComponent
           value={query}
@@ -52,7 +52,7 @@ const RepoFiltersComponent = ({
             e.preventDefault();
             onQuerySubmit(query);
           }}
-          placeholder="Search repositories by name..."
+          placeholder="Search repositories by name"
           ariaLabel="Repositories search"
         />
       </div>

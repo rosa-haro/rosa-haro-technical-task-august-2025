@@ -1,7 +1,6 @@
 import { ClipLoader } from "react-spinners";
 
 type Props = {
-  /** Label: Text announced to screen readers (and optionally shown). */
   label?: string;
   size?: number;
   color?: string;
