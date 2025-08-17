@@ -28,7 +28,7 @@ const UserPage = () => {
   const [error, setError] = useState<string | null>(null);
 
   const [repoQuery, setRepoQuery] = useState("");
-  const [language, setLanguage] = useState<string>("All");
+  const [language, setLanguage] = useState<string>("");
 
   const [visibleCount, setVisibleCount] = useState(VISIBLE_REPOS_STEP);
 
@@ -45,7 +45,7 @@ const UserPage = () => {
       setError(null);
       setRepos([]);
       setRepoQuery("");
-      setLanguage("All");
+      setLanguage("");
       setVisibleCount(VISIBLE_REPOS_STEP);
 
       try {
@@ -71,18 +71,18 @@ const UserPage = () => {
 
   /**
    * Derives the language options from dataset.
-   * - Includes "All" as the first option.
+   *
    * - Sorts alphabetically for a predictable UI.
    */
   const languageOptions = useMemo(() => {
     const set = new Set<string>();
     for (const r of repos) if (r.language) set.add(r.language);
-    return ["All", ...Array.from(set).sort((a, b) => a.localeCompare(b))];
+    return [...Array.from(set).sort((a, b) => a.localeCompare(b))];
   }, [repos]);
 
   /** Combinable filtering in memory.
    * - Text match: case-insensitivity on repo.name.
-   * - Language match: exact equality, "All" disables the language filter.
+   * - Language match: exact equality
    */
   const reposFiltered = useMemo(() => {
     const query = repoQuery.trim().toLowerCase();
@@ -91,7 +91,7 @@ const UserPage = () => {
     return repos.filter((r) => {
       const nameMatch = query ? r.name.toLowerCase().includes(query) : true;
       const langMatch =
-        !lang || lang === "All" ? true : (r.language ?? "") === lang;
+        !lang ? true : (r.language ?? "") === lang;
       return nameMatch && langMatch;
     });
   }, [repos, repoQuery, language]);
