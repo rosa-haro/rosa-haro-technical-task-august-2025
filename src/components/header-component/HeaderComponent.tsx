@@ -6,9 +6,10 @@ const HeaderComponent = () => {
       <div className="relative max-w-7xl mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center justify-between">
         <a
           href="/"
-          className="text-[length:var(--font-h3)] font-semibold hover:opacity-90"
+          className="text-[length:var(--font-h2)] font-semibold hover:opacity-90"
         >
-          GitHub Repo Searcher
+          <span className="text-[color:var(--color-accent)] font-bold">GitHub </span>
+          Repo Searcher
         </a>
 
         <div className="w-full max-w-md">
