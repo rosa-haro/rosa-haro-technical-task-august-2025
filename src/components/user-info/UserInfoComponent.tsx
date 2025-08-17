@@ -7,7 +7,7 @@ const UserInfoComponent = ({ user }: Props) => {
   const blogUrl = normalizeUrl(user.blog);
 
   return (
-    <section className="card-base p-4" aria-label="User profile">
+    <section className="card-base px-6 pt-6 pb-8" aria-label="User profile">
 
         <div className="flex flex-col gap-3 lg:gap-4 lg:text-center">
         <div className="flex items-center gap-3 lg:flex-col lg:gap-4">
@@ -33,7 +33,7 @@ const UserInfoComponent = ({ user }: Props) => {
    </div>
 
         {user.bio && (
-          <p className="text-[length:var(--font-body)] truncate-2">
+          <p className="text-[length:var(--font-body)] text-center whitespace-pre-wrap break-words">
             {user.bio}
           </p>
         )}

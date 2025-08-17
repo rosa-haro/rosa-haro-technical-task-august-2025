@@ -123,11 +123,11 @@ const UserPage = () => {
   }
 
   return (
-    <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-6">
+    <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-8 items-start">
       <section className="card-base p-4">
         <UserInfoComponent user={user} />
       </section>
-      <section className="flex flex-col gap-4">
+      <section className="flex flex-col gap-8">
         <RepoFiltersComponent
           repoQuery={repoQuery}
           onQuerySubmit={setRepoQuery}

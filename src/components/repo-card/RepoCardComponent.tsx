@@ -6,7 +6,7 @@ type Props = { repo: GithubRepo };
 const RepoCardComponent = ({ repo }: Props) => {
   return (
     <article
-      className="card-base p-5 md:p-6 transition-all hover:bg-white/[0.06] hover:translate-y-[-1px] hover:shadow-lg/10 focus-within:shadow-lg/10 ring-1 ring-[var(--color-border)]/60"
+      className="card-base h-full flex flex-col p-5 md:p-6 transition-all hover:bg-white/[0.06] hover:translate-y-[-1px] hover:shadow-lg/10 focus-within:shadow-lg/10 ring-1 ring-[var(--color-border)]/60"
       aria-labelledby={`repo-${repo.id}`}
     >
       <h3
@@ -23,12 +23,14 @@ const RepoCardComponent = ({ repo }: Props) => {
         </a>
       </h3>
 
+      <div className="min-h-[2rem]">
       {repo.description && (
-        <p className="text-[color:var(--color-muted)]/90 leading-relaxed truncate-2 mb-4">
+        <p className="text-[color:var(--color-muted)]/90 leading-relaxed truncate-2 mb-3">
           {repo.description}
         </p>
       )}
-      <div className="grid gap-3 text-[length:var(--font-meta)]">
+      </div>
+      <div className="grid gap-2 text-[length:var(--font-meta)] mt-auto">
         <div className="flex items-center gap-2 flex-wrap">
           {repo.language && (
             <div className="inline-flex items-center gap-1 rounded-full bg-white/5 px-2 py-0.5">
@@ -64,7 +66,7 @@ const RepoCardComponent = ({ repo }: Props) => {
           )}
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-end pt-1">
           <span className="text-[color:var(--color-muted)]">
             Updated {timeAgo(repo.updated_at)}
           </span>

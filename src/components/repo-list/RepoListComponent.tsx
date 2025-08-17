@@ -17,7 +17,7 @@ const RepoListComponent = ({ repos }: Props) => {
 
   return (
     <section aria-label="Repositories">
-      <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-6">
+      <ul className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
       {repos.map((r) => (
         <li key={r.id}>
 
