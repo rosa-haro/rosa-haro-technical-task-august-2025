@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #212121;
-  --color-surface: color-mix(in oklab, #212121 90%, #9c27b0);
-  --color-border: #2a2a2a;
+  --color-bg: #0D1117;
+  --color-surface: #161B22;
+  --color-border: #212830;
   --color-primary: #9c27b0;
   --color-primary-700: #7b1fa2;
   --color-accent: #e1bee7;
@@ -12,6 +12,8 @@
   --color-danger: #ef4444;
   --color-text: #ffffff;
   --color-muted: #bdbdbd;
+  --color-header: #010409;
+  --header-overlay-opacity: 0.55;
 
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
@@ -45,7 +47,7 @@ body {
            rounded-[var(--radius-md)] px-3 py-2
            text-[length:var(--font-body)]
            placeholder:text-[color:var(--color-muted)]
-           focus-visible:outline-none focus-visible:ring-2
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset
            focus-visible:ring-white/60 focus-visible:ring-offset-2
            focus-visible:ring-offset-[var(--color-bg)]
            disabled:opacity-50 disabled:cursor-not-allowed;
@@ -79,7 +81,7 @@ body {
 .badge-accent {
   @apply inline-flex items-center rounded-full px-2 py-0.5
            text-[length:var(--font-meta)]
-           bg-[var(--color-accent)] text-[#212121];
+           bg-[var(--color-accent)] text-[#0D1117];
 }
 
 .skeleton {
@@ -95,4 +97,27 @@ body {
   -webkit-box-orient: vertical;
   line-clamp: 2;
   overflow: hidden;
+}
+
+/* HEADER GLASS OVERLAY */
+.header-glass {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    overflow: hidden;
+
+}
+
+.header-glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgb(1 4 9 / var(--header-overlay-opacity));
+    backdrop-filter: blur(8px) saturate(1.4) brightness(0.95);
+    z-index: 0;
+}
+
+.header-glass > .inner {
+    position: relative;
+    z-index: 1;
 }
