@@ -3,6 +3,19 @@ import HomePage from "./pages/HomePage";
 import UserPage from "./pages/UserPage";
 import HeaderLayout from "./layouts/HeaderLayout";
 
+/**
+ * Application router.
+ *
+ * Responsibilities:
+ * - Mounts React Router with the public routes.
+ * - `/` renders `HomePage`.
+ * - `/user/:username` renders `UserPage` within `HeaderLayout`.
+ *
+ * Notes:
+ * - `HeaderLayout` provides the shared top header and delegates page layout.
+ *
+ */
+
 function App() {
   return (
       <BrowserRouter>

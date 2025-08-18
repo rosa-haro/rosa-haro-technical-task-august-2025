@@ -1,8 +1,42 @@
+/**
+ * Lightweight suggestion item used by the autocomplete.
+ *
+ * @property {string} login
+ * @property {string} avatar_url
+ * @property {string} html_url
+ */
+
 export type UserSuggestion = Pick<GithubUser, "login" | "avatar_url" | "html_url">;
+
+/**
+ * Response shape for GitHub user search.
+ *
+ * @property {number} total_count
+ * @property {boolean} incomplete_results
+ * @property {Array<{ login: string; id: number; avatar_url: string; html_url: string }>} items
+ */
 
 export type GithubUserSearchResponse = {
   items: UserSuggestion[];
 }
+
+/**
+ * Minimal GitHub user shape used by this app.
+ *
+ * Source: https://docs.github.com/en/rest/users/users?apiVersion=2022-11-28#get-a-user
+ * Only the fields we consume are included to keep the model lean.
+ *
+ * @property {string} login - Username.
+ * @property {number} id - Numeric GitHub user ID.
+ * @property {string} avatar_url - Avatar image URL.
+ * @property {string} html_url - Public profile URL.
+ * @property {string|null} [name] - Display name (may be null).
+ * @property {string|null} [bio] - Bio text (may be null).
+ * @property {number} [followers] - Followers count.
+ * @property {number} [following] - Following count.
+ * @property {string|null} [location] - Free-form location (may be null).
+ * @property {string|null} [blog] - Blog/website URL (may be null; normalized before rendering).
+ */
 
 export type GithubUser = {
   login: string;
@@ -38,6 +72,21 @@ export type GithubUser = {
   created_at: string; 
   updated_at: string;
 };
+
+/**
+ * Minimal GitHub repository shape used by this app.
+ *
+ * Source: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-a-user
+ *
+ * @property {number} id - Repository ID.
+ * @property {string} name - Repository name.
+ * @property {string|null} description - Optional description.
+ * @property {string|null} language - Primary language (nullable in API).
+ * @property {number} stargazers_count - Stars count.
+ * @property {number} forks - Forks count.
+ * @property {string} html_url - Public repo URL.
+ * @property {string} updated_at - ISO timestamp used for "Updated …".
+ */
 
 export type GithubRepo = {
   id: number;

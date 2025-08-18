@@ -2,21 +2,40 @@ import type { ReactNode } from "react";
 import ErrorIcon from "../../assets/icons/error.svg?react";
 
 /**
- * ErrorStateComponent — generic error presenter.
+ * Generic error message presenter.
+ *
+ * Responsibilities:
+ * - Displays an error icon, message text, and an optional action (button/link).
+ * - Styled to appear centered and prominent.
  *
  * Accessibility:
- * - Uses role="alert" so screen readers announce the message immediately.
- *
- * Props:
- * - message: error messaage to display (default: "Something went wrong.")
- * - action: optional React node (e.g., a Retry button/link).
- * - className: for styling.
+ * - Root has `role="alert"` with `aria-live="assertive"`, so the message is
+ *   announced immediately by screen readers.
  */
+
+/**
+ * Props for ErrorStateComponent.
+ *
+ * @property {string} [message="Something went wrong."] - Error message to display.
+ * @property {ReactNode} [action] - Optional action, e.g. a Retry button or Back link.
+ * @property {string} [className] - Optional extra CSS classes.
+ */
+
 type Props = {
   message?: string;
   action?: ReactNode;
   className?: string;
 };
+
+/**
+ * ErrorStateComponent
+ *
+ * @example
+ * <ErrorStateComponent
+ *   message="Failed to load user data and repositories."
+ *   action={<Link to="/">Back to search</Link>}
+ * />
+ */
 
 const ErrorStateComponent = ({
   message = "Something went wrong.",

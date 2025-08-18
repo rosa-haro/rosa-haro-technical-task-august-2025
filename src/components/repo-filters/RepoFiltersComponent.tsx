@@ -4,26 +4,33 @@ import LanguageFilterComponent from "../language-filter/LanguageFilterComponent"
 import ResetIcon from "../../assets/icons/reset.svg?react"
 
 /**
- * RepoFiltersComponent — combines a plain search bar (text filter) and a Language select.
+ * RepoFiltersComponent — combines a plain search bar and a language select.
  *
  * Responsibilities:
- * - Holds a local input state (`repoQuery`) to allow typing freely.
- * - Applies the text filter only on form submit (calls `onQuerySubmit(repoquery)`).
- * - Controls language via a controlled <select> with `onLanguageChange`.
- * - Does not fetch or filter data itself; emits the chosen criteria to the parent.
- *
- * Props:
- * - repoQuery: currently applied text filter.
- * - onQuerySubmit(value): called when user submits the search form.
- * - language: currently selected language value.
- * - languageOptions: list of available options (e.g., ["All", "TypeScript", "Go", ...]).
- * - onLanguageChange(lang): called when language changes.
+ * - Holds local state (`query`) so the input is editable without committing until submit.
+ * - Calls `onQuerySubmit(query)` when the form is submitted.
+ * - Passes `language` and `languageOptions` to the LanguageFilterComponent.
+ * - Provides a "Reset filters" button to clear both query and language.
  *
  * Accessibility:
- * - The search bar is a plain input form (no suggestions).
- * - The language control has a visible label or `aria-label`.
+ * - Search bar uses a simple input form with `aria-label="Repositories search"`.
+ * - Language select has its own label/aria-label.
+ * - Reset button has `aria-label="Reset filters"` and is disabled if no filters are active.
  *
+ * Notes:
+ * - Does not fetch or filter data itself; it only emits the chosen criteria.
  */
+
+/**
+ * Props for RepoFiltersComponent.
+ *
+ * @property {string} repoQuery - Current applied text filter.
+ * @property {(value: string) => void} onQuerySubmit - Called on search form submit.
+ * @property {string} language - Currently selected language.
+ * @property {string[]} languageOptions - Available language options.
+ * @property {(lang: string) => void} onLanguageChange - Called when language changes.
+ */
+
 type Props = {
   repoQuery: string;
   onQuerySubmit: (value: string) => void;
@@ -32,6 +39,22 @@ type Props = {
   onLanguageChange: (lang: string) => void;
 };
 
+/**
+ * RepoFiltersComponent
+ *
+ * UI block that lets users filter repositories by name (text search) and by language.
+ * Includes a reset button to clear filters in one click.
+ *
+ * @example
+ * <RepoFiltersComponent
+ *   repoQuery={repoQuery}
+ *   onQuerySubmit={setRepoQuery}
+ *   language={language}
+ *   languageOptions={languageOptions}
+ *   onLanguageChange={setLanguage}
+ * />
+ */
+
 const RepoFiltersComponent = ({
   repoQuery,
   onQuerySubmit,
@@ -39,8 +62,6 @@ const RepoFiltersComponent = ({
   languageOptions,
   onLanguageChange,
 }: Props) => {
-  // Local input state.
-  // Parent query updates only after submit.
   const [query, setQuery] = useState(repoQuery);
 
   return (

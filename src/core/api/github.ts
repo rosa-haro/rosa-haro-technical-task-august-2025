@@ -5,13 +5,38 @@ import type {
   UserSuggestion,
 } from "../types/github";
 
+/**
+ * GitHub REST API (v3) helpers used by the app.
+ * 
+ * Notes:
+ * - All requests send `Accept: application/vns.github+json`.
+ * - `AbortError` is always treated as benign (returns empty/null silently).
+ * - Error-handling contract is documented per function.
+ */
+
 const BASE_URL = "https://api.github.com";
 
 /**
- * Fetches GitHub user profile by username.
- * @param username - GitHub login
- * @returns GithubUser or null on error/empty input.
+ * Fetches a GitHub user profile by username.
+ * 
+ * Behavior:
+ * - Success: returns a `GithubUser`.
+ * - 404 Non Found: return `null` (username does not exist).
+ * - AbortError (request cancelled): returns `null`.
+ * - Other HTTP/Network errors: **throws** the original error (caller must handle).
+ * 
+ * Rationale:
+ * Profile data is critical for the UI. Throwing on unexpected errors allows the 
+ * caller to distinguish "there is no such user" (404) from "something went wrong"
+ * @param {string} username - GitHub login (whitespace is trimmed). 
+ * @returns {Promise<GithubUser|null>} Resolves to the user or `null` (404/empty input/aborted).
+ * @throws {Error} When the response is not OK and not a 404 (e.g., 500, 403 rate limit).
+ * 
+ * @example
+ * const user = await fetchUserData("rosaharo");
+ * if (!user) { show "User not found" }
  */
+
 export const fetchUserData = async (username: string) => {
   try {
     if (!username.trim()) return null;
@@ -45,20 +70,30 @@ export const fetchUserData = async (username: string) => {
  * Fetches a single page of repositories for a given GitHub user.
  *
  * Pagination:
- * - Uses `page` (1-based) and (default 30, max 100).
- * - Inspects the HTTP `Link` response header; if it contains `rel="next"`,
- *   `hasNextPage` will be `true`, otherwise `false`.
+ * - Uses `page` (1-based) and `perPage` (default 30, max 100).
+ * - Inspects the HTTP `Link` header; if it contains `rel="next"`, then `hasNextPage = true`.
  *
- * Errors:
- * - On network or HTTP errors, it logs to the console and returns `{ data: [], hasNextPage: false }`.
+ * Behavior:
+ * - Success: returns `{ data, hasNextPage }`.
+ * - 404 Not Found: returns `{ data: [], hasNextPage: false }`.
+ * - AbortError (request cancelled): returns `{ data: [], hasNextPage: false }`.
+ * - Other HTTP/Network errors: returns `{ data: [], hasNextPage: false }` (no throw).
  *
- * @param username - Github username (whitespace is trimmed).
- * @param opts - Optional setting:
- *    @property page    - Page number (1-based). Default: 1.
- *    @property perPage - Items per page. Default: 30 (max 100).
- *    @property signal  - Optional AbortSignal to cancel the request.
- * @returns Promise<{ data: GithubRepo[]; hasNextPage: boolean }>
+ * Rationale:
+ * Repos are non-critical compared to the profile. Returning empty results keeps the
+ * UI simple (show “no repos”) without bubbling errors unnecessarily.
+ * 
+ * @param {string} username - GitHub username (whitespace is trimmed).
+ * @param {Object} [opts] - Optional settings.
+ * @param {number} [opts.page=1] - Page number (1-based).
+ * @param {number} [opts.perPage=30] - Items per page (max 100).
+ * @param {AbortSignal} [opts.signal] - Used to cancel the request.
+ * @returns {Promise<{ data: GithubRepo[]; hasNextPage: boolean }>}
+ *
+ * @example
+ * const { data, hasNextPage } = await fetchUserRepos("rosa-haro", { perPage: 100 });
  */
+
 export const fetchUserRepos = async (
   username: string,
   opts?: { page?: number; perPage?: number; signal?: AbortSignal }
@@ -102,16 +137,27 @@ export const fetchUserRepos = async (
 
 /**
  * Fetches ALL repositories for a user by walking through pages.
- * Uses `perPage=100` to minimize requests.
+ * Uses `perPage=100` by default to minimize the number of requests.
  *
- * Notes:
- * - This is a high-level convenience API built on top of `fetchUserRepos`.
- * - Prefer this in the UI if you want filters to operate on the full dataset
- *   and keep the UI pagination purely local.
- * @param username
- * @param opts
- * @returns
+ * Built on top of `fetchUserRepos`.
+ *
+ * Behavior:
+ * - Success: returns a flat array with all repositories.
+ * - Empty/invalid username: returns `[]`.
+ * - AbortError (request cancelled): returns `[]`.
+ * - Other HTTP/Network errors: returns `[]` (inherits behavior from `fetchUserRepos`).
+ * 
+ * @param {string} username - GitHub username.
+ * @param {Object} [opts] - Optional settings.
+ * @param {number} [opts.perPage=100] - Items per page to use while walking pages (max 100).
+ * @param {AbortSignal} [opts.signal] - Used to cancel ongoing pagination.
+ * @returns {Promise<GithubRepo[]>}
+ *
+ * @example
+ * const repos = await fetchAllUserRepos("rosa-haro");
+ * // Great for local filtering + client-side paging.
  */
+
 export const fetchAllUserRepos = async (
   username: string,
   opts?: { perPage?: number; signal?: AbortSignal }
@@ -137,21 +183,26 @@ export const fetchAllUserRepos = async (
 };
 
 /**
- * Searches GitHub users for the given query and returns a simplified list
- * of suggestions (login, avatar_url, html_url).
+ * Searches GitHub users for a given query and returns simplified suggestions
+ * (login, avatar_url, html_url). Intended for the username autocomplete.
  *
- * Uses the optional AbortSignal to cancel in-flight requests (useful when typing),
- *
- * @param query - Raw user input. It will be trimmed and URL-encoded.
- * @param opts - Optional options object.
- * @param - opts.signal - AbortSignal to cancel the underlying fetch request.
- * @returns Promise<UserSuggestion[]> - An array of suggestions (empty on error or no results).
+ * Behavior:
+ * - Success: returns an array of `UserSuggestion`.
+ * - Empty/whitespace query: returns `[]`.
+ * - AbortError (request cancelled): returns `[]`.
+ * - Other HTTP/Network errors: returns `[]` (no throw).
+ * 
+ * @param {string} query - Raw user input (trimmed and URL-encoded).
+ * @param {Object} [opts] - Optional settings.
+ * @param {AbortSignal} [opts.signal] - Used to cancel the request (typing).
+ * @returns {Promise<UserSuggestion[]>} Empty array on error or no results.
  *
  * @example
  * const controller = new AbortController();
- * const suggestions = await searchUserFetch("rosa", { signal: controller.signal });
- * // controller.abort() will cancel the request if needed.
+ * const items = await searchUserFetch("rosa", { signal: controller.signal });
+ * // controller.abort() to cancel if the user keeps typing.
  */
+
 export const searchUserFetch = async (
   query: string,
   opts?: { signal?: AbortSignal }

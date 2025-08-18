@@ -1,20 +1,47 @@
 import ArrowDropdownIcon from "../../assets/icons/arrow-dropdown.svg?react";
+
 /**
- * LanguageFilterComponent — presentational select for repository language.
+ * LanguageFilterComponent — presentational <select> for filtering repositories by language.
  *
- * Props:
- * - value: current selected language (e.g., "TypeScript").
- * - options: list of available language options.
- * onChange(lang): emits the selected language value to parent.
+ * Responsibilities:
+ * - Controlled value: receives the current language.
+ * - Emits `onChange(lang)` when the selection changes.
+ * - Provides a default "All languages" option.
  *
- * Acessibility:
- * - Provides a visible label or `aria-label="Filter by language"`
+ * Accessibility:
+ * - Wraps the <select> in a <label> with `aria-label="Filter by language"`.
+ * - Includes a decorative dropdown icon (SVG).
+ *
+ * Notes:
+ * - This component does not perform any filtering itself; it only exposes user intent.
  */
+
+/**
+ * Props for LanguageFilterComponent.
+ *
+ * @property {string} value - Currently selected language ("" means all).
+ * @property {string[]} options - Available languages (already pre-sorted by parent).
+ * @property {(lang: string) => void} onChange - Called when user selects a language.
+ */
+
 type Props = {
   value: string;
   options: string[];
   onChange: (lang: string) => void;
 };
+
+/**
+ * LanguageFilterComponent
+ *
+ * Reusable select dropdown to filter repositories by programming language.
+ *
+ * @example
+ * <LanguageFilterComponent
+ *   value={language}
+ *   options={languageOptions}
+ *   onChange={(lang) => setLanguage(lang)}
+ * />
+ */
 
 const LanguageFilterComponent = ({ value, options, onChange }: Props) => {
   return (
