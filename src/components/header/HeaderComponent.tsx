@@ -1,5 +1,16 @@
 import UserSearchComponent from "../user-search/UserSearchComponent";
 
+/**
+ * App header with brand and inline username search.
+ *
+ * Responsibilities:
+ * - Displays the app name (link to home).
+ * - Renders `UserSearchComponent` on the right for quick navigation.
+ *
+ * Notes:
+ * - Pure presentational wrapper; routing/search behavior lives in child components.
+ */
+
 const HeaderComponent = () => {
   return (
     <header className="header-glass">
