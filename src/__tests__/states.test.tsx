@@ -56,4 +56,38 @@ describe("UserPage — states (loader, empty, error", () => {
       await screen.findByRole("heading", { name: /demo-repo/i })
     ).toBeInTheDocument();
   });
+
+  it("shows RepoList empty state when the user has 0 repositories", async () => {
+    server.use(
+      http.get(`${BASE_URL}/users/:username`, ({ params }) => {
+        const { username } = params as { username: string };
+        return HttpResponse.json(
+          {
+            login: username,
+            id: 1,
+            avatar_url: "https://example.com/avatar.png",
+            name: "Rosa",
+          },
+          { status: 200 }
+        );
+      }),
+      http.get(`${BASE_URL}/users/:username/repos`, () => {
+        return HttpResponse.json([], { status: 200 });
+      })
+    );
+
+    render(
+      <MemoryRouter initialEntries={["/user/rosa-haro"]}>
+        <Routes>
+          <Route path="/user/:username" element={<UserPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(
+      await screen.findByRole("heading", {
+        name: /No repositories match your filters/i,
+      })
+    ).toBeInTheDocument();
+  });
 });
