@@ -10,11 +10,27 @@ import { searchUserFetch } from "../api/github";
 import type { UserSuggestion } from "../types/github";
 
 /**
- * Configuration options for the `useUserSuggestions` hook.
- * @property minChars   Minimum characters before fetching suggestions (default: 2).
- * @property debounceMs Debounce delay in milliseconds before triggering a fetch (default: 300).
- * @property fetchFn    Function that fetches suggestions; defaults to the GitHub users API wrapper.
+ * Custom React hook to provide GitHub username suggestions while typing.
+ *
+ * Responsibilities:
+ * - Manages debounced input changes.
+ * - Cancels in-flight requests with `AbortController`.
+ * - Opens/closes the suggestions dropdown.
+ * - Handles keyboard navigation (↑/↓/Enter/Escape).
+ * - Wires up ARIA attributes for combobox/listbox accessibility.
+ *
+ * Presentation-agnostic: does not render UI or navigate.
+ * Consumers decide what to do on submit or item selection.
  */
+
+/**
+ * Configuration options for the `useUserSuggestions` hook.
+ *
+ * @property {number} [minChars=2] - Minimum characters before fetching.
+ * @property {number} [debounceMs=300] - Delay in ms before firing a request.
+ * @property {Function} [fetchFn=searchUserFetch] - Custom fetcher for suggestions.
+ */
+
 type Options = {
   minChars?: number;
   debounceMs?: number;
@@ -25,45 +41,79 @@ type Options = {
 };
 
 /**
- * Custom hook to manage user search suggestions for GitHub usernames.
- * 
+ * Provides username search suggestions logic for GitHub users.
+ *
  * Handles:
- * - Debounced input changes with minimum character threshold.
- * - Cancelling in-flight requests via AbortController to prevent race conditions.
- * - Opening/closing of suggestions dropdown.
- * - Keyboard navigation (↑/↓/Enter/Escape).
- * - Accesible listbox/combobox ARIA bindings.
- * 
- * This hook is presentation-agnostic: it does not navigate or render UI.
- * Callers decide what to do when the form is submitted (`onSubmit`) or an item is selected.
- * 
- * @param options - Optional configuration: minChars, debounceMs, fetchFn.
- * @returns State and handlers to wire up an input + suggestions listbox.
+ * - Input changes → debounced fetch when length >= minChars.
+ * - Cancelling previous requests to prevent race conditions.
+ * - Dropdown state (`isOpen`, `activeIndex`).
+ * - Keyboard interactions (↑/↓ to move, Enter to select, Esc to close).
+ * - Form submit (Enter) when dropdown is closed.
+ * - Mouse selection (via `onSelect`).
+ *
+ * Accessibility:
+ * - Exposes `listboxId` to link combobox (`aria-controls`) with listbox.
+ * - Returns `activeIndex` so the parent can set `aria-activedescendant`.
+ *
+ * Error handling:
+ * - AbortError is swallowed silently.
+ * - Other fetch errors are logged and clear the suggestions.
+ *
+ * @param {Options} [options] - Optional config: `minChars`, `debounceMs`, `fetchFn`.
+ * @returns {{
+ *   query: string;
+ *   items: UserSuggestion[];
+ *   isOpen: boolean;
+ *   activeIndex: number;
+ *   listboxId: string;
+ *   setActiveIndex: (i: number) => void;
+ *   setIsOpen: (open: boolean) => void;
+ *   setQuery: (q: string) => void;
+ *   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+ *   onKeyDown: (
+ *     e: KeyboardEvent<HTMLInputElement>,
+ *     callbacks?: { onSelect?: (item: UserSuggestion) => void; onSubmit?: (q: string) => void }
+ *   ) => void;
+ *   onSubmit: (
+ *     e: FormEvent,
+ *     callbacks?: { onSubmit?: (q: string) => void }
+ *   ) => void;
+ *   onSelect: (
+ *     item: UserSuggestion,
+ *     callback?: (item: UserSuggestion) => void
+ *   ) => void;
+ * }}
+ *
+ * @example
+ * const {
+ *   query, items, isOpen, activeIndex,
+ *   onChange, onKeyDown, onSubmit, onSelect
+ * } = useUserSuggestions();
  */
-
 export function useUserSuggestions({
   minChars = 2,
   debounceMs = 300,
   fetchFn = searchUserFetch,
 }: Options = {}) {
   /// ---- State ----
-  const [query, setQuery] = useState<string>("");
-  const [items, setItems] = useState<UserSuggestion[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [query, setQuery] = useState<string>(""); // Current text in the input
+  const [items, setItems] = useState<UserSuggestion[]>([]); // Suggestions fetched from API
+  const [isOpen, setIsOpen] = useState(false); // Whether dropdown is visible
+  const [activeIndex, setActiveIndex] = useState(0); // Highlighted item for keyboard navigation
 
   /** ID used by aria-controls to link combobox with listbox */
   const listboxId = "user-suggestions";
 
-  // ---- Refs for side-effect management ----
+  // ---- Refs to manage side effects (debounce + abort) ----
   const debounceId = useRef<ReturnType<typeof setTimeout> | null>(null);
   const controllerRef = useRef<AbortController | null>(null);
 
   /**
-   * Fetches user suggestions for a given query.
-   * Cancels any ongoing request before starting a new one.
-   * 
-   * @param q - Trimmed search query (length >= minChars).
+   * Fetch user suggestions for the given query.
+   * - Aborts any previous request (so only the latest input counts).
+   * - On success: update items, open dropdown, reset activeIndex.
+   * - On AbortError: exit silently (user typed again).
+   * - On other errors: log + close dropdown.
    */
   const requestSuggestions = async (q: string) => {
     if (controllerRef.current) controllerRef.current.abort();
@@ -86,8 +136,10 @@ export function useUserSuggestions({
   };
 
   /**
-   * Handles changes in the search input.
-   * Debounces the query and triggers suggestions fetch if length >= minChars.
+   * Handle typing in the input.
+   * - Updates `query`.
+   * - If query length < minChars → clear suggestions & close dropdown.
+   * - Otherwise → debounce the API call (wait `debounceMs` before firing).
    */
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
@@ -117,12 +169,12 @@ export function useUserSuggestions({
   };
 
   /**
-   * Handles keyboard navigation and selection within the suggestions list.
-   * 
-   * @param e - Keyboard event from the input element. 
-   * @param callbacks - Optional callbacks:
-   *  - onSelect: called when selecting an item via Enter key.
-   *  - onSubmit: called when pressing Enter without selecting from suggestions. 
+   * Handle keyboard interactions:
+   * - Escape → close dropdown
+   * - ArrowDown / ArrowUp → move activeIndex
+   * - Enter:
+   *    - If dropdown open → select current item (via onSelect callback).
+   *    - If dropdown closed → submit raw query (via onSubmit callback).
    */
   const onKeyDown = (
     e: KeyboardEvent<HTMLInputElement>,
@@ -177,10 +229,11 @@ export function useUserSuggestions({
   };
 
   /**
-   * Handles form submission.
-   * Calls the provided onSubmit callback with the current query.
+   * Handle form submit (e.g. pressing Enter when dropdown is closed).
+   * - Trims query.
+   * - Calls `onSubmit` callback with the current query.
+   * - Closes dropdown.
    */
-
   const onSubmit = (
     e: FormEvent,
     callbacks: { onSubmit?: (query: string) => void } = {}
@@ -193,10 +246,10 @@ export function useUserSuggestions({
   };
 
   /**
-   * Handles selection of a suggestion via mouse or touch.
-   * Calls the provided callback with the selected item.
+   * Handle mouse/touch selection of a suggestion.
+   * - Calls the provided callback with the chosen item.
+   * - Closes dropdown.
    */
-
   const onSelect = (
     item: UserSuggestion,
     callback?: (item: UserSuggestion) => void
@@ -207,8 +260,8 @@ export function useUserSuggestions({
 
   /**
    * Cleanup on unmount:
-   *  - Clears pending debounce timers.
-   *  - Aborts any in-flight fetch request.
+   * - Clear any pending debounce timers.
+   * - Abort any in-flight fetch request.
    */
   useEffect(() => {
     return () => {
