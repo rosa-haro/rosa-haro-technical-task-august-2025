@@ -14,6 +14,9 @@ import ArrowDropdownIcon from "../../assets/icons/arrow-dropdown.svg?react";
  *
  * Notes:
  * - This component does not perform any filtering itself; it only exposes user intent.
+ * - Uses the native <select> so the OS renders the dropdown menu. We style only the trigger.
+ *   This preserves accessibility, consistent keyboard/mobile behavior, and avoids cross-browser quirks.
+ *   If a fully custom menu is needed, replace this with an ARIA-compliant listbox/combobox.
  */
 
 /**
