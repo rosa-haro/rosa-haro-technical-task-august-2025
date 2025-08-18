@@ -90,4 +90,31 @@ describe("UserPage — states (loader, empty, error", () => {
       })
     ).toBeInTheDocument();
   });
+
+  it("shows error state when API fails", async () => {
+    server.use(
+        http.get(`${BASE_URL}/users/:username`, () => {
+            return HttpResponse.json({ message: "Server error "}, { status: 500 });
+        }),
+        http.get(`${BASE_URL}/users/:username/repos`, () => {
+            return HttpResponse.json({ message: "Server error "}, { status: 500 });
+        })
+    );
+
+    render(
+        <MemoryRouter initialEntries={["/user/rosa-haro"]}>
+            <Routes>
+                <Route path="/user/:username" element={<UserPage />} />
+            </Routes>
+        </MemoryRouter>
+    );
+
+    expect(
+        await screen.findByRole("alert", { name: undefined })
+    ).toBeInTheDocument();
+    expect(
+        screen.getByText(/Failed to load user data and repositories/i)
+    ).toBeInTheDocument();
+    expect(screen.getByText(/Back to search/i)).toBeInTheDocument();
+  });
 });
