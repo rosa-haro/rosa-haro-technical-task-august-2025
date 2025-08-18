@@ -61,7 +61,7 @@ const LanguageFilterComponent = ({ value, options, onChange }: Props) => {
           ))}
         </select>
 
-        <ArrowDropdownIcon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(-color-muted)] transition-colors group-focus-within:text-[color:var(--color-text)]/80 fill-current" />
+        <ArrowDropdownIcon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--color-muted)] transition-colors group-focus-within:text-[color:var(--color-text)]/80 fill-current" />
       </div>
     </label>
   );

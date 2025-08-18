@@ -79,7 +79,7 @@ const RepoCardComponent = ({ repo }: Props) => {
             {repo.stargazers_count > 0 && (
               <div className="inline-flex items-center gap-1 rounded-full bg-white/5 px-2 py-0.5 text-[color:var(--color-text)]/90">
                 <StarIcon className="h-4 w-4 text-[color:var(--color-star)] fill-current" />
-                <span aria-label="Startgazers count">
+                <span aria-label="Stargazers count">
                   {repo.stargazers_count}
                 </span>
               </div>
