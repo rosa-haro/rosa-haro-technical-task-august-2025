@@ -1,5 +1,6 @@
-// src/test/handlers.ts
 import { http, HttpResponse } from "msw";
+
+/** Default MSW handlers for GitHub API endpoints used in tests (search users, user, repos). */
 
 const BASE_URL = "https://api.github.com";
 
