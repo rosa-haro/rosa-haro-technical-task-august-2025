@@ -151,7 +151,7 @@ const UserPage = () => {
     return (
       <ErrorStateComponent
         message="Failed to load user data and repositories."
-        action={<Link to="/">Back to search</Link>}
+        action={<Link to="/" className="button-secondary px-5 py-2">Back to search</Link>}
       />
     );
   }

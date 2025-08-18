@@ -58,13 +58,7 @@ const ErrorStateComponent = ({
         <p className="text-[length:var(--font-h2)] text-[color:var(--color-muted)] max-w-md">
           {message}
         </p>
-        {action ? (
-          <div className="mt-2">
-            <button type="button" className="button-secondary px-5 py-2">
-              {action}
-            </button>
-          </div>
-        ) : null}
+        {action ? <div className="mt-2">{action}</div> : null}
       </div>
     </div>
   );
