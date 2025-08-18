@@ -1,4 +1,4 @@
-import UserSearchComponent from "../components/user-search-component/UserSearchComponent";
+import UserSearchComponent from "../components/user-search/UserSearchComponent";
 
 const HomePage = () => {
   return (

@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { server } from "../test/server";
 import { http, HttpResponse } from "msw";
-import UserSearchComponent from "../components/user-search-component/UserSearchComponent";
+import UserSearchComponent from "../components/user-search/UserSearchComponent";
 
 const BASE_URL = "https://api.github.com";
 
