@@ -36,6 +36,7 @@ const BASE_URL = "https://api.github.com";
  * const user = await fetchUserData("rosaharo");
  * if (!user) { show "User not found" }
  */
+
 export const fetchUserData = async (username: string) => {
   try {
     if (!username.trim()) return null;
@@ -92,6 +93,7 @@ export const fetchUserData = async (username: string) => {
  * @example
  * const { data, hasNextPage } = await fetchUserRepos("rosa-haro", { perPage: 100 });
  */
+
 export const fetchUserRepos = async (
   username: string,
   opts?: { page?: number; perPage?: number; signal?: AbortSignal }
@@ -155,6 +157,7 @@ export const fetchUserRepos = async (
  * const repos = await fetchAllUserRepos("rosa-haro");
  * // Great for local filtering + client-side paging.
  */
+
 export const fetchAllUserRepos = async (
   username: string,
   opts?: { perPage?: number; signal?: AbortSignal }
@@ -199,6 +202,7 @@ export const fetchAllUserRepos = async (
  * const items = await searchUserFetch("rosa", { signal: controller.signal });
  * // controller.abort() to cancel if the user keeps typing.
  */
+
 export const searchUserFetch = async (
   query: string,
   opts?: { signal?: AbortSignal }

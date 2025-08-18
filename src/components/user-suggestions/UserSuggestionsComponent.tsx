@@ -1,25 +1,35 @@
 import type { UserSuggestion } from "../../core/types/github";
 
 /**
- * Presentational listbox for user search suggestions.
+ * Presentational listbox for username suggestions.
+ * 
+ * Responsibilities:
+ * - Renders a `<ul role="listbox">` with `<li role="option">` items.
+ * - Highlights the active item via `aria-selected` for keyboard users.
+ * - Emits `onSelect(item)` on mouse selection (mousedown to keep focus).
+ * - Emits `onHover(index)` when the pointer moves across options (optional).
  * 
  * Accessibility:
- * - The root element is a <ul id="user-suggestions" role="listbox">
- * - Each item is rendered as <li role="option" aria-selected={boolean}>
- * - The parent combobox should reference this listbox via aria-controls="user-suggestions"
- *   and manage focus/active item via aria-activedescendant="suggestion-{index}".
+ * - The parent "combobox" should reference this listbox via `aria-controls`
+ *   and manage `aria-activedescendant` on the input.
+ * - Each item gets a stable `id="suggestion-${index}"` to be used upstream.
  * 
- * Empty state: - The Component always renders the <ul>. When `items.length === 0`,
- * it shows a single disabled <li> with the "No results" message.
+ * Empty state:
+ * - Always renders the `<ul>`. When `items.length === 0`, shows a single
+ *   disabled `<li>` with "No results".
  * 
- * Interaction:
- * - Mouse selection uses onMouseDown to avoid losing focus before selecting.
- * - Keyboard navigation (↑/↓/Enter) is habled by the parent combobox.
- * 
- * @param items - Suggestions to render (login, avatar_url, html_url).
- * @param activeIndex - Zero-based index of the highlighted suggestion.
- * @param onSelect - Called when a suggestion is chosen (click or mouse down).
- * @param onHover - Optional callback when the pointer hovers an item (updates activeIndex)
+ * Notes:
+ * - This component is intentionally UI-only: no fetching or navigation here.
+ */
+
+/**
+ * Props for `UserSuggestionsComponent`.
+ *
+ * @property {UserSuggestion[]} items - List of suggestions to display.
+ * @property {number} activeIndex - Zero-based index of the highlighted item.
+ * @property {(item: UserSuggestion) => void} onSelect - Called on mouse selection.
+ * @property {(index: number) => void} [onHover] - Optional; updates active index on pointer hover.
+ * @property {string} [emptyText="No results"] - Optional message when `items` is empty.
  */
 
 type Props = {
@@ -29,6 +39,22 @@ type Props = {
   onHover?: (index: number) => void;
   emptyText?: string;
 };
+
+/**
+ * UserSuggestionsComponent
+ *
+ * Renders GitHub user suggestions with proper listbox semantics. Uses
+ * `onMouseDown` to allow selection without losing focus on the input (important
+ * for the combobox pattern).
+ *
+ * @example
+ * <UserSuggestionsComponent
+ *   items={items}
+ *   activeIndex={activeIndex}
+ *   onSelect={(item) => navigate(`/user/${item.login}`)}
+ *   onHover={(i) => setActiveIndex(i)}
+ * />
+ */
 
 const UserSuggestionsComponent = ({
   items,
