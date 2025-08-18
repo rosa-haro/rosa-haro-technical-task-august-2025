@@ -96,12 +96,6 @@ body {
            hover:border-[var(--color-border)];
 }
 
-.badge-warn {
-  @apply inline-flex items-center rounded-full px-2 py-0.5
-           text-[length:var(--font-meta)]
-           bg-[var(--color-warn)] text-[#212121];
-}
-
 .badge-accent {
   @apply inline-flex items-center rounded-full px-2.25 py-0.5
            text-[length:var(--font-meta)]
@@ -109,13 +103,10 @@ body {
            bg-[var(--color-accent)] text-[#0D1117];
 }
 
-.skeleton {
-  @apply animate-pulse bg-white/10 rounded-[var(--radius-sm)];
-}
-
 .truncate-1 {
   @apply truncate;
 }
+
 .truncate-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -124,7 +115,6 @@ body {
   overflow: hidden;
 }
 
-/* HEADER GLASS OVERLAY */
 .header-glass {
   position: sticky;
   top: 0;

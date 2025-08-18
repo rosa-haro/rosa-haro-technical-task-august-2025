@@ -88,7 +88,7 @@ const RepoFiltersComponent = ({
         onQuerySubmit("");
         onLanguageChange("");
       }}
-      className="button-secondary h-9 px-3 self-stretch md:self-auto disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+      className="button-secondary h-9 px-3 self-stretch md:self-auto cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
       aria-label= "Reset filters"
       disabled={!query.trim() && !language}>
         <ResetIcon className="text-[color:var(--color-muted)] fill-current"/>

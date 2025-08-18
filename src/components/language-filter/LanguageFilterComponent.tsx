@@ -14,6 +14,9 @@ import ArrowDropdownIcon from "../../assets/icons/arrow-dropdown.svg?react";
  *
  * Notes:
  * - This component does not perform any filtering itself; it only exposes user intent.
+ * - Uses the native <select> so the OS renders the dropdown menu. We style only the trigger.
+ *   This preserves accessibility, consistent keyboard/mobile behavior, and avoids cross-browser quirks.
+ *   If a fully custom menu is needed, replace this with an ARIA-compliant listbox/combobox.
  */
 
 /**
@@ -61,7 +64,7 @@ const LanguageFilterComponent = ({ value, options, onChange }: Props) => {
           ))}
         </select>
 
-        <ArrowDropdownIcon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(-color-muted)] transition-colors group-focus-within:text-[color:var(--color-text)]/80 fill-current" />
+        <ArrowDropdownIcon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--color-muted)] transition-colors group-focus-within:text-[color:var(--color-text)]/80 fill-current" />
       </div>
     </label>
   );

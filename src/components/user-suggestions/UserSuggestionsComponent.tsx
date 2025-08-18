@@ -29,7 +29,6 @@ import type { UserSuggestion } from "../../core/types/github";
  * @property {number} activeIndex - Zero-based index of the highlighted item.
  * @property {(item: UserSuggestion) => void} onSelect - Called on mouse selection.
  * @property {(index: number) => void} [onHover] - Optional; updates active index on pointer hover.
- * @property {string} [emptyText="No results"] - Optional message when `items` is empty.
  */
 
 type Props = {
@@ -37,7 +36,6 @@ type Props = {
   activeIndex: number;
   onSelect: (item: UserSuggestion) => void;
   onHover?: (index: number) => void;
-  emptyText?: string;
 };
 
 /**
