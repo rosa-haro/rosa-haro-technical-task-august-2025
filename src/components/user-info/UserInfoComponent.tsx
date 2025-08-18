@@ -2,7 +2,38 @@ import type { GithubUser } from "../../core/types/github";
 import { normalizeUrl } from "../../core/utils/url";
 import LocationIcon from "../../assets/icons/location.svg?react";
 
+/**
+ * User profile summary for the sidebar.
+ * 
+ * Responsibilities:
+ * - Shows avatar, display name (or login), GitHub link, bio (if present),
+ *   followers/following counters, location and blog link (if present).
+ * - Normalizes the blog URL (adds https:// if missing).
+ * 
+ * Accessibility:
+ * - Wraps content in `<section aria-label="User profile">`.
+ * - Avatar gets an `alt` describing whose image it is.
+ * 
+ * Notes:
+ * - Keeps layout resilient with truncation utilities for long URLs.
+ */
+
+/**
+ * Props for UserInfoComponent.
+ * 
+ * @property {GithubUser} user - User data as returned by the GitHub API.
+ */
+
 type Props = { user: GithubUser };
+
+/**
+ * UserInfoComponent
+ * 
+ * Compact profile panel designed for the left column on the user page.
+ * 
+ * @example
+ * <UserInfoComponent user={user} />
+ */
 
 const UserInfoComponent = ({ user }: Props) => {
   const blogUrl = normalizeUrl(user.blog);
@@ -19,7 +50,7 @@ const UserInfoComponent = ({ user }: Props) => {
           />
 
           <div className="min-w-0">
-            <h2 className="text-[length:var(--font-h2)] font-semibold truncate-1">
+            <h2 className="text-[length:var(--font-h2)] font-semibold">
               {user.name ?? user.login}
             </h2>
             <a
