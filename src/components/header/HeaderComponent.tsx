@@ -1,4 +1,4 @@
-import UserSearchComponent from "../user-search-component/UserSearchComponent";
+import UserSearchComponent from "../user-search/UserSearchComponent";
 
 const HeaderComponent = () => {
   return (
