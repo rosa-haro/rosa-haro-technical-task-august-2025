@@ -87,7 +87,7 @@ const UserPage = () => {
 
       try {
         const [userData, repos] = await Promise.all([
-          fetchUserData(username),
+          fetchUserData(username, { signal: controller.signal }),
           fetchAllUserRepos(username, { signal: controller.signal }),
         ]);
 
