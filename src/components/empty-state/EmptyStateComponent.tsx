@@ -1,23 +1,41 @@
 import { useId, type ReactNode } from "react";
 
 /**
- * EmptyStateComponent — generic empty state presenter.
- *
+ * Generic empty state presenter.
+ * 
+ * Responsibilities:
+ * - Shows a title (required), optional description and optional action (e.g. button).
+ * - Intended for "no data" cases (e.g., no repos found).
+ * 
  * Accessibility:
- * - Uses <section aria-labelledby=...> so screen readers announce the title.
- *
- * Props:
- * - title: main message (e.g., "User not found").
- * - description: optional secondary text.
- * - action: optional CTA (button/link) rendered after the text.
- * - className: for styling.
+ * - Uses `<section aria-labelledby>` to tie heading and section
  */
+
+/**
+ * Props for EmptyStateComponent.
+ *
+ * @property {string} title - Main message to display.
+ * @property {string} [description] - Secondary explanatory text.
+ * @property {ReactNode} [action] - Optional CTA (button/link).
+ * @property {string} [className] - Optional extra CSS classes.
+ */
+
 type Props = {
   title: string;
   description?: string;
   action?: ReactNode;
   className?: string;
 };
+
+/**
+ * EmptyStateComponent
+ *
+ * @example
+ * <EmptyStateComponent
+ *   title="No repositories match your filters."
+ *   description="Try adjusting the filters."
+ * />
+ */
 
 const EmptyStateComponent = ({
   title,
