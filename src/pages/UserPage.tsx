@@ -10,15 +10,52 @@ import RepoFiltersComponent from "../components/repo-filters/RepoFiltersComponen
 import EmptyStateComponent from "../components/empty-state/EmptyStateComponent";
 
 /**
- * UserPage
- * - Loads user profile and all repositories
- * - Applies local, combinable filters: name+ language
- * - Displays a single "Show more" button to reveal items in steps
+ * UserPage — fetches a user's GitHub profile and repositories, then provides
+ * client-side filtering (text + language) and simple incremental reveal.
+ * 
+ * Data loading:
+ * - Loads user profile and all repositories in parallel (see `fetchUserData` and `fetchAllUserRepos`).
+ * - On `username` change: resets filters and local paging, aborts in-flight requests.
+ * 
+ * UX:
+ * - Shows loader while fetching.
+ * - On error: shows a generic error state with a link back to search.
+ * - If user not found: shows a compact empty state.
+ * - Filters are **combinable** and operate in-memory over the full dataset.
+ * - Local paging reveals more items in steps (no server pagination).
+ * 
+ * Accessibility:
+ * - Delegates accessibility to child components (UserInfo, RepoFilters, RepoList).
  */
 
-/** How many filtered repositories are currently visible (local paging). */
+/**
+ * Number of repositories revealed per "Show more" click.
+ * Keeps the initial render lightweight while allowing the full list in small steps.
+ */
+
 const VISIBLE_REPOS_STEP = 12;
 
+
+/**UserPage
+ * 
+ * Responsibilities:
+ * - Derives `username` from the route.
+ * - Fetches `GithubUser` + all `GithubRepo[]` (walking the API with `perPage=100`).
+ * - Derives language options from the dataset (unique + alphabetical).
+ * - Applies in-memory filters:
+ *    - Text: case-insensitive substring match on `repo.name`.
+ *    - Language: exact match on `repo.language` (empty = all).
+ * - Resets the visible slice when filters change; reveals more with "Show more".
+ *
+ * Error handling:
+ * - AbortError during navigation/typing is benign (ignored).
+ * - Other errors are surfaced via `ErrorStateComponent` with a "Back to search" action.
+ *
+ * @example
+ * // Route: /user/:username
+ * <Route path="/user/:username" element={<UserPage />} />
+ */
+ 
 const UserPage = () => {
   const { username } = useParams<{ username: string }>();
 

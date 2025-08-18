@@ -1,5 +1,16 @@
 import UserSearchComponent from "../components/user-search/UserSearchComponent";
 
+/**
+ * HomePage — simple landing with app title, subtitle, and the username search.
+ *
+ * Responsibilities:
+ * - Presents the `UserSearchComponent` (combobox + suggestions).
+ * - Leaves all fetching and navigation to the search flow itself.
+ *
+ * @example
+ * <Route path="/" element={<HomePage />} />
+ */
+
 const HomePage = () => {
   return (
     <main className="max-w-3xl mx-auto px-4 pt-40 md:px-6 md:pt-50">
