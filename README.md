@@ -12,7 +12,8 @@ It was developed as a technical assignment with focus on **clean architecture, s
 - [🏗 Architecture & Design Decisions](#-architecture--design-decisions)  
 - [🔗 API Layer](#-api-layer)  
 - [♿ Accessibility](#-accessibility)  
-- [🧪 Testing Strategy](#-testing-strategy)  
+- [🧪 Testing Strategy](#-testing-strategy)
+- [📚 Storybook](#-storybook)
 - [🎨 UI & Styling](#-ui--styling)  
 - [🚀 Getting Started](#-getting-started)  
 - [🔄 Development Workflow](#-development-workflow)  
@@ -243,6 +244,33 @@ This ensures the search and repository filtering flow remains usable for screen-
 
 ---
 
+## 📚 Storybook
+
+This project includes a slim Storybook to document presentational components.
+
+### Run
+\`\`\`bash
+npm run storybook
+# build static
+npm run build-storybook
+\`\`\`
+
+### Covered components
+- UI States: \`LoaderComponent\`, \`EmptyStateComponent\`, \`ErrorStateComponent\`
+- Filters + Search: \`LanguageFilterComponent\`, \`SearchBarComponent\`, \`UserSuggestionsComponent\`
+- Repos: \`RepoCardComponent\`, \`RepoListComponent\`
+
+### Configuration (Storybook v9 + Vite)
+- Tailwind styles are loaded in \`.storybook/preview.ts\`:
+  \`\`\`ts
+  import "../src/index.css";
+  \`\`\`
+- SVG as React components enabled with **SVGR** in \`.storybook/main.ts\` via \`viteFinal\`.
+- In Storybook **v9**, Essentials/Interactions are part of core; no addon entries are required.
+- Stories live under \`src/**/*.stories.tsx\`.
+
+---
+
 ## 🎨 UI & Styling
 
 - Dark theme inspired by GitHub.  
@@ -304,8 +332,6 @@ VITE_GITHUB_TOKEN=ghp_xxx
 
 ## 📈 Future Improvements
 
-## 📈 Future Improvements
-
 - **Hybrid loading strategy for repositories**  
   Currently all repositories are fetched upfront so filters (text + language) operate on the full dataset. For better initial performance on very large accounts, load the first page by default and fetch the rest in the background when the user starts typing in the text filter or opens the language select.
 
@@ -316,7 +342,7 @@ VITE_GITHUB_TOKEN=ghp_xxx
   Persist filters in URL params, add recent searches (optional persistence), and cache GitHub requests with React Query or SWR.
 
 - **UI/UX**  
-  Add Storybook for core components (SearchBar, LanguageFilter, RepoCard, RepoList, states), skeleton loaders, an error boundary and click-outside behavior for suggestions dropdown.
+  Expand Storybook coverage to pages/flows and add click-outside behavior for suggestions dropdown.
 
 ---
 
