@@ -22,7 +22,6 @@ const BASE_URL = "https://api.github.com";
  * Behavior:
  * - Success: returns a `GithubUser`.
  * - 404 Not Found: returns `null` (username does not exist).
- * - AbortError (request cancelled via AbortSignal): returns `null`.
  * - Other HTTP/Network errors: **throws** the original error (caller must handle).
  *
  * Rationale:
@@ -30,20 +29,16 @@ const BASE_URL = "https://api.github.com";
  * caller to distinguish “no such user” (404) from “something went wrong”.
  *
  * @param {string} username - GitHub login (whitespace is trimmed).
- * @param {{ signal?: AbortSignal }} [opts] - Optional settings.
- * @param {AbortSignal} [opts.signal] - Signal to cancel the request.
  * @returns {Promise<GithubUser|null>} Resolves to the user or `null` (404/empty input/aborted).
  * @throws {Error} When the response is not OK and not a 404 (e.g., 500, 403 rate limit).
  *
  * @example
- * const controller = new AbortController();
- * const user = await fetchUserData("octocat", { signal: controller.signal });
- * // controller.abort() to cancel if the route changes quickly.
+ * const user = await fetchUserData("rosaharo");
+ * if (!user) { show "User not found"}
  */
 
 export const fetchUserData = async (
-  username: string,
-  opts?: { signal?: AbortSignal }
+  username: string
   ) => {
   try {
     if (!username.trim()) return null;
@@ -55,7 +50,6 @@ export const fetchUserData = async (
         headers: {
           Accept: "application/vnd.github+json",
         },
-        signal: opts?.signal,
       }
     );
 
@@ -67,9 +61,6 @@ export const fetchUserData = async (
     const result = await res.json();
     return result as GithubUser;
   } catch (error: unknown) {
-    if (error instanceof DOMException && error.name === "AbortError") {
-      return null;
-    }
     throw error;
   }
 };
