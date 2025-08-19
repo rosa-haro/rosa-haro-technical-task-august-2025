@@ -54,7 +54,6 @@ Search user from Home → select user → filter repositories → reset reposito
 ### Core functionality
 
 - **User search with suggestions**
-
   - Powered by GitHub’s Search API.
   - Suggestions dropdown opens when typing ≥ 2 characters.
   - Keyboard navigation: ↑/↓ to move, Enter to select, Escape to close.
@@ -62,7 +61,6 @@ Search user from Home → select user → filter repositories → reset reposito
   - Empty state in dropdown: “No results”.
 
 - **User profile**
-
   - Avatar, name, login, bio, followers/following, location.
   - Nlog link normalized (`https://` added if missing).
   - Responsive layout: larger avatar and centered layout on desktop.
@@ -119,7 +117,6 @@ I used **TailwindCSS v4** because it enables consistent styling with design toke
 The application is designed for **maintainability and scalability**:
 
 - **Separation of concerns**
-
   - `core/api`: GitHub API helpers (`fetchUserData`, `fetchUserRepos`, `fetchAllUserRepos`).
   - `core/utils`: reusable utilities (`timeAgo`, `normalizeUrl`, `languageColors`).
   - `components`: small, focused, presentational components.
@@ -127,14 +124,12 @@ The application is designed for **maintainability and scalability**:
   - `layouts`: reusable layout (HeaderLayout with navigation).
 
 - **Local state instead of global state**
-
   - I initially considered Redux, as I have experience with it, but for this scope it would be over-engineering.
   - Local state and URL params are sufficient.
   - Simpler, easier to follow, and lighter codebase.
   - If requirements grow (e.g., persisted filters, recent searches, caching), adding Redux Toolkit or React Query would be straightforward.
 
 - **Component per folder**
-
   - Each component lives in its own folder (even if today it has only one file).
   - Makes imports stable and predictable.
 
@@ -167,13 +162,11 @@ The application is designed for **maintainability and scalability**:
 ## 🔗 API Layer
 
 - **Endpoints**
-
   - `GET /search/users?q=<query>` → user suggestions
   - `GET /users/:username` → user profile
   - `GET /users/:username/repos?per_page=100&sort=updated` → repositories
 
 - **Example responses**
-
   - User:
     ```json
     {
@@ -200,12 +193,10 @@ The application is designed for **maintainability and scalability**:
     ```
 
 - **Pagination**
-
   - `fetchUserRepos`: returns a batch of repositories with pagination info (`{ data, hasNextPage }`), or empty array on error.
   - `fetchAllUserRepos`: loops until completion to fetch _all_ repos for a user, ensuring filters (text + language) work on the full dataset.
 
 - **Resilience**
-
   - All API helpers accept an optional `AbortSignal`.
   - Errors are caught and surfaced in the UI as an error state, instead of crashing.
   - `AbortError` is treated as a benign cancellation.
@@ -239,7 +230,6 @@ Instead of a simple input for suggestions, I implemented a proper **combobox/lis
   ```
 
 - **UI states**
-
   - Loader: `role="status"` with optional `aria-label="Loading..."`.
   - Error: `role="alert"` with assertive live region.
   - Empty states with clear, descriptive copy.
@@ -261,18 +251,15 @@ This ensures the search and repository filtering flow remains usable for screen-
 ### What is tested
 
 - **HomePage (user suggestions)**
-
   - Shows suggestions on typing.
   - Navigates to UserPage when selecting.
 
 - **UserPage (repo filters)**
-
   - Filters repositories by text (on submit).
   - Filters by language.
   - Combines text + language filters.
 
 - **UserPage (states)**
-
   - Loader while fetching.
   - Empty state when 0 repos.
   - Error state when API fails.

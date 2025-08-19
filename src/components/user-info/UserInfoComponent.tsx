@@ -4,23 +4,23 @@ import LocationIcon from "../../assets/icons/location.svg?react";
 
 /**
  * User profile summary for the sidebar.
- * 
+ *
  * Responsibilities:
  * - Shows avatar, display name (or login), GitHub link, bio (if present),
  *   followers/following counters, location and blog link (if present).
  * - Normalizes the blog URL (adds https:// if missing).
- * 
+ *
  * Accessibility:
  * - Wraps content in `<section aria-label="User profile">`.
  * - Avatar gets an `alt` describing whose image it is.
- * 
+ *
  * Notes:
  * - Keeps layout resilient with truncation utilities for long URLs.
  */
 
 /**
  * Props for UserInfoComponent.
- * 
+ *
  * @property {GithubUser} user - User data as returned by the GitHub API.
  */
 
@@ -28,9 +28,9 @@ type Props = { user: GithubUser };
 
 /**
  * UserInfoComponent
- * 
+ *
  * Compact profile panel designed for the left column on the user page.
- * 
+ *
  * @example
  * <UserInfoComponent user={user} />
  */
@@ -40,8 +40,7 @@ const UserInfoComponent = ({ user }: Props) => {
 
   return (
     <section className="card-base px-6 pt-6 pb-8" aria-label="User profile">
-
-        <div className="flex flex-col gap-3 lg:gap-4 lg:text-center">
+      <div className="flex flex-col gap-3 lg:gap-4 lg:text-center">
         <div className="flex items-center gap-3 lg:flex-col lg:gap-4">
           <img
             src={user.avatar_url}
@@ -62,7 +61,7 @@ const UserInfoComponent = ({ user }: Props) => {
               @{user.login}
             </a>
           </div>
-   </div>
+        </div>
 
         {user.bio && (
           <p className="text-[length:var(--font-body)] text-left lg:text-center whitespace-pre-wrap break-words">
@@ -79,7 +78,9 @@ const UserInfoComponent = ({ user }: Props) => {
           <ul className="space-y-1">
             {user.location && (
               <li className="text-[length:var(--font-body)] truncate-1 flex items-start lg:justify-center gap-1">
-                <span><LocationIcon className="h-5 w-5" /></span>
+                <span>
+                  <LocationIcon className="h-5 w-5" />
+                </span>
                 <span>{user.location}</span>
               </li>
             )}

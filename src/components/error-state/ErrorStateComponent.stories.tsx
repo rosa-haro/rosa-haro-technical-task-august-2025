@@ -6,7 +6,11 @@ const meta: Meta<typeof ErrorStateComponent> = {
   component: ErrorStateComponent,
   args: {
     message: "Failed to load user data and repositories.",
-    action: <a className="button-secondary px-4 py-2" href="/">Back to search</a>,
+    action: (
+      <a className="button-secondary px-4 py-2" href="/">
+        Back to search
+      </a>
+    ),
   },
 };
 export default meta;

@@ -19,7 +19,7 @@ describe("UserPage — states (loader, empty, error", () => {
             avatar_url: "https://example.com/avatar.png",
             name: "Rosa",
           },
-          { status: 200 }
+          { status: 200 },
         );
       }),
       http.get(`${BASE_URL}/users/:username/repos`, async () => {
@@ -35,9 +35,9 @@ describe("UserPage — states (loader, empty, error", () => {
               forks: 0,
             },
           ],
-          { status: 200 }
+          { status: 200 },
         );
-      })
+      }),
     );
 
     render(
@@ -45,15 +45,15 @@ describe("UserPage — states (loader, empty, error", () => {
         <Routes>
           <Route path="/user/:username" element={<UserPage />} />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(
-      screen.getByText(/Loading user and repositories/i)
+      screen.getByText(/Loading user and repositories/i),
     ).toBeInTheDocument();
 
     expect(
-      await screen.findByRole("heading", { name: /demo-repo/i })
+      await screen.findByRole("heading", { name: /demo-repo/i }),
     ).toBeInTheDocument();
   });
 
@@ -68,12 +68,12 @@ describe("UserPage — states (loader, empty, error", () => {
             avatar_url: "https://example.com/avatar.png",
             name: "Rosa",
           },
-          { status: 200 }
+          { status: 200 },
         );
       }),
       http.get(`${BASE_URL}/users/:username/repos`, () => {
         return HttpResponse.json([], { status: 200 });
-      })
+      }),
     );
 
     render(
@@ -81,39 +81,39 @@ describe("UserPage — states (loader, empty, error", () => {
         <Routes>
           <Route path="/user/:username" element={<UserPage />} />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(
       await screen.findByRole("heading", {
         name: /No repositories match your filters/i,
-      })
+      }),
     ).toBeInTheDocument();
   });
 
   it("shows error state when API fails", async () => {
     server.use(
-        http.get(`${BASE_URL}/users/:username`, () => {
-            return HttpResponse.json({ message: "Server error "}, { status: 500 });
-        }),
-        http.get(`${BASE_URL}/users/:username/repos`, () => {
-            return HttpResponse.json({ message: "Server error "}, { status: 500 });
-        })
+      http.get(`${BASE_URL}/users/:username`, () => {
+        return HttpResponse.json({ message: "Server error " }, { status: 500 });
+      }),
+      http.get(`${BASE_URL}/users/:username/repos`, () => {
+        return HttpResponse.json({ message: "Server error " }, { status: 500 });
+      }),
     );
 
     render(
-        <MemoryRouter initialEntries={["/user/rosa-haro"]}>
-            <Routes>
-                <Route path="/user/:username" element={<UserPage />} />
-            </Routes>
-        </MemoryRouter>
+      <MemoryRouter initialEntries={["/user/rosa-haro"]}>
+        <Routes>
+          <Route path="/user/:username" element={<UserPage />} />
+        </Routes>
+      </MemoryRouter>,
     );
 
     expect(
-        await screen.findByRole("alert", { name: undefined })
+      await screen.findByRole("alert", { name: undefined }),
     ).toBeInTheDocument();
     expect(
-        screen.getByText(/Failed to load user data and repositories/i)
+      screen.getByText(/Failed to load user data and repositories/i),
     ).toBeInTheDocument();
     expect(screen.getByText(/Back to search/i)).toBeInTheDocument();
   });

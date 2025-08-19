@@ -15,7 +15,7 @@ const fakeRepo = (overrides: Partial<Repo> = {}): Repo =>
     updated_at: new Date().toISOString(),
     html_url: "#",
     ...overrides,
-  } as unknown as Repo);
+  }) as unknown as Repo;
 
 const meta: Meta<typeof RepoCardComponent> = {
   title: "Repos/RepoCardComponent",

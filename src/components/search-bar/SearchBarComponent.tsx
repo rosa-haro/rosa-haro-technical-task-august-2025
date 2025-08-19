@@ -1,19 +1,19 @@
 import { type ChangeEvent, type FormEvent, type KeyboardEvent } from "react";
-import SearchIcon from "../../assets/icons/search.svg?react"
+import SearchIcon from "../../assets/icons/search.svg?react";
 
 /**
  * Presentational search input + submit button.
- * 
+ *
  * Responsibilities:
  * - Controlled input: value + onChange.
  * - Optional onKeyDown passthrough (for custom keyboard handling upstream).
  * - Form submit calls `onSubmit` with the native event.
- * 
+ *
  * Accessibility:
  * - Sets `type="text"`, `inputMode="search"`, and `enterKeyHint="search"`.
  * - Uses `aria-label` (or an explicit label upstream) to announce purpose.
  * - `aria-activedescendant` can be forwarded for combobox patterns.
- * 
+ *
  * Notes:
  * - This component does not fetch data or navigate. It emits events and stays
  *   fully presentation-only so it can be reused (e.g., in repo filters).
@@ -70,7 +70,10 @@ const SearchBarComponent = ({
   autoComplete = "off",
 }: Props) => {
   return (
-    <form onSubmit={onSubmit} className="relative w-full flex items-center gap-1">
+    <form
+      onSubmit={onSubmit}
+      className="relative w-full flex items-center gap-1"
+    >
       <input
         type="text"
         inputMode="search"
@@ -84,9 +87,14 @@ const SearchBarComponent = ({
         autoComplete={autoComplete}
         className="input-base flex-1"
       />
-      <button type="submit" disabled={!value.trim()} className="button-primary button-primary--search-icon h-9 w-9 p-0 flex items-center justify-center 
-                   disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none" aria-label="Search">
-        <SearchIcon aria-hidden={true}/>
+      <button
+        type="submit"
+        disabled={!value.trim()}
+        className="button-primary button-primary--search-icon h-9 w-9 p-0 flex items-center justify-center 
+                   disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+        aria-label="Search"
+      >
+        <SearchIcon aria-hidden={true} />
       </button>
     </form>
   );

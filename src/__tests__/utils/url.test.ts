@@ -11,7 +11,7 @@ describe("normalizeUrl", () => {
 
   it("adds https:// when missing", () => {
     expect(normalizeUrl("github.com/rosa-haro")).toBe(
-      "https://github.com/rosa-haro"
+      "https://github.com/rosa-haro",
     );
     expect(normalizeUrl("example.org")).toBe("https://example.org");
   });
@@ -20,7 +20,7 @@ describe("normalizeUrl", () => {
     expect(normalizeUrl("https://github.com")).toBe("https://github.com");
     expect(normalizeUrl("http://example.org")).toBe("http://example.org");
     expect(normalizeUrl("HTTP://EXAMPLE.example")).toBe(
-      "HTTP://EXAMPLE.example"
+      "HTTP://EXAMPLE.example",
     );
   });
 

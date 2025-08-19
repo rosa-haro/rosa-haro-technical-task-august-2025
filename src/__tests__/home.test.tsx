@@ -26,15 +26,15 @@ describe("Home — user suggestions", () => {
 
         return HttpResponse.json(
           { total_count: items.length, incomplete_results: false, items },
-          { status: 200 }
+          { status: 200 },
         );
-      })
+      }),
     );
 
     render(
       <MemoryRouter>
         <UserSearchComponent />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const input = screen.getByRole("textbox", { name: /gitHub username/i });
@@ -42,7 +42,7 @@ describe("Home — user suggestions", () => {
     await userEvent.type(input, "rosa");
 
     expect(
-      await screen.findByRole("listbox", { name: /user suggestions/i })
+      await screen.findByRole("listbox", { name: /user suggestions/i }),
     ).toBeInTheDocument();
     expect(await screen.findByText(/rosa-haro/i)).toBeInTheDocument();
   });
@@ -63,9 +63,9 @@ describe("Home — user suggestions", () => {
           : [];
         return HttpResponse.json(
           { total_count: items.length, incomplete_results: false, items },
-          { status: 200 }
+          { status: 200 },
         );
-      })
+      }),
     );
 
     render(
@@ -77,7 +77,7 @@ describe("Home — user suggestions", () => {
             element={<div data-testid="user-page" />}
           />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const input = screen.getByRole("textbox", { name: /github username/i });

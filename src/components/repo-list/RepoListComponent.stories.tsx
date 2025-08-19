@@ -15,7 +15,7 @@ const fakeRepo = (o: Partial<Repo> = {}): Repo =>
     updated_at: new Date().toISOString(),
     html_url: "#",
     ...o,
-  } as unknown as Repo);
+  }) as unknown as Repo;
 
 const meta: Meta<typeof RepoListComponent> = {
   title: "Repos/RepoListComponent",

@@ -35,10 +35,10 @@ type Props = {
 
 /**
  * LoaderComponent
- * 
+ *
  * @example
  * <LoaderComponent label="Loading repositories..." />
- * 
+ *
  */
 
 const LoaderComponent = ({
@@ -53,7 +53,7 @@ const LoaderComponent = ({
       role="status"
       aria-label={hideLabel ? label : undefined}
       className={["min-h-[40vh] grid place-items-center", className ?? ""].join(
-        " "
+        " ",
       )}
     >
       <div className="flex flex-col items-center gap-4 text-[color:var(--color-muted)]">

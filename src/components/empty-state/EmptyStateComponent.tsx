@@ -2,11 +2,11 @@ import { useId, type ReactNode } from "react";
 
 /**
  * Generic empty state presenter.
- * 
+ *
  * Responsibilities:
  * - Shows a title (required), optional description and optional action (e.g. button).
  * - Intended for "no data" cases (e.g., no repos found).
- * 
+ *
  * Accessibility:
  * - Uses `<section aria-labelledby>` to tie heading and section
  */

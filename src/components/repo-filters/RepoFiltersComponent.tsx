@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SearchBarComponent from "../search-bar/SearchBarComponent";
 import LanguageFilterComponent from "../language-filter/LanguageFilterComponent";
-import ResetIcon from "../../assets/icons/reset.svg?react"
+import ResetIcon from "../../assets/icons/reset.svg?react";
 
 /**
  * RepoFiltersComponent — combines a plain search bar and a language select.
@@ -83,15 +83,18 @@ const RepoFiltersComponent = ({
         options={languageOptions}
         onChange={onLanguageChange}
       />
-      <button type="button" onClick={() => {
-        setQuery("");
-        onQuerySubmit("");
-        onLanguageChange("");
-      }}
-      className="button-secondary h-9 px-3 self-stretch md:self-auto cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
-      aria-label= "Reset filters"
-      disabled={!query.trim() && !language}>
-        <ResetIcon className="text-[color:var(--color-muted)] fill-current"/>
+      <button
+        type="button"
+        onClick={() => {
+          setQuery("");
+          onQuerySubmit("");
+          onLanguageChange("");
+        }}
+        className="button-secondary h-9 px-3 self-stretch md:self-auto cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+        aria-label="Reset filters"
+        disabled={!query.trim() && !language}
+      >
+        <ResetIcon className="text-[color:var(--color-muted)] fill-current" />
         <span className="sm:inline md:hidden">Reset filters</span>
       </button>
     </div>

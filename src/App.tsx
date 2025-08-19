@@ -18,14 +18,14 @@ import HeaderLayout from "./layouts/HeaderLayout";
 
 function App() {
   return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route element={<HeaderLayout />}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route element={<HeaderLayout />}>
           <Route path="/user/:username" element={<UserPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

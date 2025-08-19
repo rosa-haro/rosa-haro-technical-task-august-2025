@@ -36,7 +36,7 @@ type Options = {
   debounceMs?: number;
   fetchFn?: (
     q: string,
-    init?: { signal?: AbortSignal }
+    init?: { signal?: AbortSignal },
   ) => Promise<UserSuggestion[]>;
 };
 
@@ -181,7 +181,7 @@ export function useUserSuggestions({
     callbacks: {
       onSelect?: (item: UserSuggestion) => void;
       onSubmit?: (query: string) => void;
-    } = {}
+    } = {},
   ) => {
     if (e.key === "Escape") {
       setIsOpen(false);
@@ -236,7 +236,7 @@ export function useUserSuggestions({
    */
   const onSubmit = (
     e: FormEvent,
-    callbacks: { onSubmit?: (query: string) => void } = {}
+    callbacks: { onSubmit?: (query: string) => void } = {},
   ) => {
     e.preventDefault();
     const q = query.trim();
@@ -252,7 +252,7 @@ export function useUserSuggestions({
    */
   const onSelect = (
     item: UserSuggestion,
-    callback?: (item: UserSuggestion) => void
+    callback?: (item: UserSuggestion) => void,
   ) => {
     callback?.(item);
     setIsOpen(false);

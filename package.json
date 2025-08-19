@@ -12,7 +12,8 @@
     "test:ui": "vitest --ui",
     "test:watch": "vitest --watch",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "react": "^19.1.1",
@@ -42,6 +43,7 @@
     "jsdom": "^26.1.0",
     "msw": "^2.10.5",
     "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
     "storybook": "^9.1.2",
     "tailwindcss": "^4.1.12",
     "typescript": "^5.9.2",

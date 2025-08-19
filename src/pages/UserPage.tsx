@@ -12,18 +12,18 @@ import EmptyStateComponent from "../components/empty-state/EmptyStateComponent";
 /**
  * UserPage — fetches a user's GitHub profile and repositories, then provides
  * client-side filtering (text + language) and simple incremental reveal.
- * 
+ *
  * Data loading:
  * - Loads user profile and all repositories in parallel (see `fetchUserData` and `fetchAllUserRepos`).
  * - On `username` change: resets filters and local paging, aborts in-flight requests.
- * 
+ *
  * UX:
  * - Shows loader while fetching.
  * - On error: shows a generic error state with a link back to search.
  * - If user not found: shows a compact empty state.
  * - Filters are **combinable** and operate in-memory over the full dataset.
  * - Local paging reveals more items in steps (no server pagination).
- * 
+ *
  * Accessibility:
  * - Delegates accessibility to child components (UserInfo, RepoFilters, RepoList).
  */
@@ -35,9 +35,8 @@ import EmptyStateComponent from "../components/empty-state/EmptyStateComponent";
 
 const VISIBLE_REPOS_STEP = 12;
 
-
 /**UserPage
- * 
+ *
  * Responsibilities:
  * - Derives `username` from the route.
  * - Fetches `GithubUser` + all `GithubRepo[]` (walking the API with `perPage=100`).
@@ -55,7 +54,7 @@ const VISIBLE_REPOS_STEP = 12;
  * // Route: /user/:username
  * <Route path="/user/:username" element={<UserPage />} />
  */
- 
+
 const UserPage = () => {
   const { username } = useParams<{ username: string }>();
 
@@ -127,8 +126,7 @@ const UserPage = () => {
 
     return repos.filter((r) => {
       const nameMatch = query ? r.name.toLowerCase().includes(query) : true;
-      const langMatch =
-        !lang ? true : (r.language ?? "") === lang;
+      const langMatch = !lang ? true : (r.language ?? "") === lang;
       return nameMatch && langMatch;
     });
   }, [repos, repoQuery, language]);
@@ -142,7 +140,7 @@ const UserPage = () => {
 
   const reposVisible = useMemo(
     () => reposFiltered.slice(0, visibleCount),
-    [reposFiltered, visibleCount]
+    [reposFiltered, visibleCount],
   );
 
   if (loading)
@@ -151,18 +149,24 @@ const UserPage = () => {
     return (
       <ErrorStateComponent
         message="Failed to load user data and repositories."
-        action={<Link to="/" className="button-secondary px-5 py-2">Back to search</Link>}
+        action={
+          <Link to="/" className="button-secondary px-5 py-2">
+            Back to search
+          </Link>
+        }
       />
     );
   }
   if (!user) {
     return (
       <div className="min-h-[80vh] grid place-items-center">
-        <EmptyStateComponent title="User not found" className="card-base mx-auto max-w-md px-10 py-8 text-center text-lg"/>
-
+        <EmptyStateComponent
+          title="User not found"
+          className="card-base mx-auto max-w-md px-10 py-8 text-center text-lg"
+        />
       </div>
-    )
-}
+    );
+  }
 
   return (
     <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-8 items-start">

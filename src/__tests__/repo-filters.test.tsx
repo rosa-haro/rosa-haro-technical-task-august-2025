@@ -19,7 +19,7 @@ describe("UserPage — repo filters", () => {
             avatar_url: "https://example.com/avatar.png",
             name: "Rosa",
           },
-          { status: 200 }
+          { status: 200 },
         );
       }),
 
@@ -51,26 +51,26 @@ describe("UserPage — repo filters", () => {
               description: "Personal website",
             },
           ],
-          { status: 200 }
+          { status: 200 },
         );
-      })
+      }),
     );
     render(
       <MemoryRouter initialEntries={["/user/rosa-haro"]}>
         <Routes>
           <Route path="/user/:username" element={<UserPage />} />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(
-      await screen.findByRole("heading", { name: /remember-me/i })
+      await screen.findByRole("heading", { name: /remember-me/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /remix-app/i })
+      screen.getByRole("heading", { name: /remix-app/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /my-portfolio/i })
+      screen.getByRole("heading", { name: /my-portfolio/i }),
     ).toBeInTheDocument();
 
     const input = screen.getByRole("textbox", { name: /repositories search/i });
@@ -79,13 +79,13 @@ describe("UserPage — repo filters", () => {
     await userEvent.type(input, "rem{enter}");
 
     expect(
-      await screen.findByRole("heading", { name: /remember-me/i })
+      await screen.findByRole("heading", { name: /remember-me/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /remix-app/i })
+      screen.getByRole("heading", { name: /remix-app/i }),
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("heading", { name: /my-portfolio/i })
+      screen.queryByRole("heading", { name: /my-portfolio/i }),
     ).not.toBeInTheDocument();
   });
 
@@ -100,7 +100,7 @@ describe("UserPage — repo filters", () => {
             avatar_url: "https://example.com/avatar.png",
             name: "Rosa",
           },
-          { status: 200 }
+          { status: 200 },
         );
       }),
       http.get(`${BASE_URL}/users/:username/repos`, () => {
@@ -131,9 +131,9 @@ describe("UserPage — repo filters", () => {
               description: "Personal website",
             },
           ],
-          { status: 200 }
+          { status: 200 },
         );
-      })
+      }),
     );
 
     render(
@@ -141,17 +141,17 @@ describe("UserPage — repo filters", () => {
         <Routes>
           <Route path="/user/:username" element={<UserPage />} />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(
-      await screen.findByRole("heading", { name: /remember-me/i })
+      await screen.findByRole("heading", { name: /remember-me/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /remix-app/i })
+      screen.getByRole("heading", { name: /remix-app/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /my-portfolio/i })
+      screen.getByRole("heading", { name: /my-portfolio/i }),
     ).toBeInTheDocument();
 
     const select = screen.getByRole("combobox", {
@@ -160,14 +160,14 @@ describe("UserPage — repo filters", () => {
     await userEvent.selectOptions(select, "TypeScript");
 
     expect(
-      await screen.findByRole("heading", { name: /remember-me/i })
+      await screen.findByRole("heading", { name: /remember-me/i }),
     ).toBeInTheDocument();
 
     expect(
-      screen.queryByRole("heading", { name: /remix-app/i })
+      screen.queryByRole("heading", { name: /remix-app/i }),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("heading", { name: /my-portfolio/i })
+      screen.queryByRole("heading", { name: /my-portfolio/i }),
     ).not.toBeInTheDocument();
   });
 
@@ -182,7 +182,7 @@ describe("UserPage — repo filters", () => {
             avatar_url: "https://example.com/avatar.png",
             name: "Rosa",
           },
-          { status: 200 }
+          { status: 200 },
         );
       }),
       http.get(`${BASE_URL}/users/:username/repos`, () => {
@@ -213,9 +213,9 @@ describe("UserPage — repo filters", () => {
               description: "Personal website",
             },
           ],
-          { status: 200 }
+          { status: 200 },
         );
-      })
+      }),
     );
 
     render(
@@ -223,17 +223,17 @@ describe("UserPage — repo filters", () => {
         <Routes>
           <Route path="/user/:username" element={<UserPage />} />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(
-      await screen.findByRole("heading", { name: /remember-me/i })
+      await screen.findByRole("heading", { name: /remember-me/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /remix-app/i })
+      screen.getByRole("heading", { name: /remix-app/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /my-portfolio/i })
+      screen.getByRole("heading", { name: /my-portfolio/i }),
     ).toBeInTheDocument();
 
     const input = screen.getByRole("textbox", { name: /repositories search/i });
@@ -241,13 +241,13 @@ describe("UserPage — repo filters", () => {
     await userEvent.type(input, "rem{enter}");
 
     expect(
-      await screen.findByRole("heading", { name: /remember-me/i })
+      await screen.findByRole("heading", { name: /remember-me/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /remix-app/i })
+      screen.getByRole("heading", { name: /remix-app/i }),
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("heading", { name: /my-portfolio/i })
+      screen.queryByRole("heading", { name: /my-portfolio/i }),
     ).not.toBeInTheDocument();
 
     const select = screen.getByRole("combobox", {
@@ -256,13 +256,13 @@ describe("UserPage — repo filters", () => {
     await userEvent.selectOptions(select, "TypeScript");
 
     expect(
-      await screen.findByRole("heading", { name: /remember-me/i })
+      await screen.findByRole("heading", { name: /remember-me/i }),
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("heading", { name: /remix-app/i })
+      screen.queryByRole("heading", { name: /remix-app/i }),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("heading", { name: /my-portfolio/i })
+      screen.queryByRole("heading", { name: /my-portfolio/i }),
     ).not.toBeInTheDocument();
   });
 });

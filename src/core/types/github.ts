@@ -6,7 +6,10 @@
  * @property {string} html_url
  */
 
-export type UserSuggestion = Pick<GithubUser, "login" | "avatar_url" | "html_url">;
+export type UserSuggestion = Pick<
+  GithubUser,
+  "login" | "avatar_url" | "html_url"
+>;
 
 /**
  * Response shape for GitHub user search.
@@ -18,7 +21,7 @@ export type UserSuggestion = Pick<GithubUser, "login" | "avatar_url" | "html_url
 
 export type GithubUserSearchResponse = {
   items: UserSuggestion[];
-}
+};
 
 /**
  * Minimal GitHub user shape used by this app.
@@ -59,7 +62,7 @@ export type GithubUser = {
   site_admin: boolean;
   name: string | null;
   company: string | null;
-  blog: string | null; 
+  blog: string | null;
   location: string | null;
   email: string | null;
   hireable: boolean | null;
@@ -69,7 +72,7 @@ export type GithubUser = {
   public_gists: number;
   followers: number;
   following: number;
-  created_at: string; 
+  created_at: string;
   updated_at: string;
 };
 
@@ -139,9 +142,9 @@ export type GithubRepo = {
   releases_url: string;
   deployments_url: string;
 
-  created_at: string; 
-  updated_at: string; 
-  pushed_at: string; 
+  created_at: string;
+  updated_at: string;
+  pushed_at: string;
 
   git_url: string;
   ssh_url: string;
@@ -174,13 +177,13 @@ export type GithubRepo = {
   web_commit_signoff_required: boolean;
 
   topics: string[];
-  visibility: string; 
+  visibility: string;
 
   forks: number;
   open_issues: number;
   watchers: number;
   default_branch: string;
-}
+};
 
 export type RepoOwner = {
   login: string;
@@ -201,7 +204,7 @@ export type RepoOwner = {
   received_events_url: string;
   type: string;
   site_admin: boolean;
-}
+};
 
 export type RepoLicense = {
   key: string;
@@ -209,4 +212,4 @@ export type RepoLicense = {
   spdx_id: string | null;
   url: string | null;
   node_id: string;
-}
+};

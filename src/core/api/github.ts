@@ -7,7 +7,7 @@ import type {
 
 /**
  * GitHub REST API (v3) helpers used by the app.
- * 
+ *
  * Notes:
  * - All requests send `Accept: application/vns.github+json`.
  * - `AbortError` is always treated as benign (returns empty/null silently).
@@ -37,9 +37,7 @@ const BASE_URL = "https://api.github.com";
  * if (!user) { show "User not found"}
  */
 
-export const fetchUserData = async (
-  username: string
-  ) => {
+export const fetchUserData = async (username: string) => {
   try {
     if (!username.trim()) return null;
 
@@ -50,7 +48,7 @@ export const fetchUserData = async (
         headers: {
           Accept: "application/vnd.github+json",
         },
-      }
+      },
     );
 
     if (res.status === 404) return null;
@@ -81,7 +79,7 @@ export const fetchUserData = async (
  * Rationale:
  * Repos are non-critical compared to the profile. Returning empty results keeps the
  * UI simple (show “no repos”) without bubbling errors unnecessarily.
- * 
+ *
  * @param {string} username - GitHub username (whitespace is trimmed).
  * @param {Object} [opts] - Optional settings.
  * @param {number} [opts.page=1] - Page number (1-based).
@@ -95,7 +93,7 @@ export const fetchUserData = async (
 
 export const fetchUserRepos = async (
   username: string,
-  opts?: { page?: number; perPage?: number; signal?: AbortSignal }
+  opts?: { page?: number; perPage?: number; signal?: AbortSignal },
 ): Promise<{ data: GithubRepo[]; hasNextPage: boolean }> => {
   try {
     const page = opts?.page ?? 1;
@@ -105,7 +103,7 @@ export const fetchUserRepos = async (
 
     const res = await fetch(
       `${BASE_URL}/users/${encodeURIComponent(
-        username
+        username,
       )}/repos?per_page=${perPage}&page=${page}&sort=updated`,
       {
         method: "GET",
@@ -113,7 +111,7 @@ export const fetchUserRepos = async (
           Accept: "application/vnd.github+json",
         },
         signal: opts?.signal,
-      }
+      },
     );
 
     if (res.status === 404) return { data: [], hasNextPage: false };
@@ -145,7 +143,7 @@ export const fetchUserRepos = async (
  * - Empty/invalid username: returns `[]`.
  * - AbortError (request cancelled): returns `[]`.
  * - Other HTTP/Network errors: returns `[]` (inherits behavior from `fetchUserRepos`).
- * 
+ *
  * @param {string} username - GitHub username.
  * @param {Object} [opts] - Optional settings.
  * @param {number} [opts.perPage=100] - Items per page to use while walking pages (max 100).
@@ -159,7 +157,7 @@ export const fetchUserRepos = async (
 
 export const fetchAllUserRepos = async (
   username: string,
-  opts?: { perPage?: number; signal?: AbortSignal }
+  opts?: { perPage?: number; signal?: AbortSignal },
 ): Promise<GithubRepo[]> => {
   const perPage = opts?.perPage ?? 100;
   if (!username.trim()) return [];
@@ -190,7 +188,7 @@ export const fetchAllUserRepos = async (
  * - Empty/whitespace query: returns `[]`.
  * - AbortError (request cancelled): returns `[]`.
  * - Other HTTP/Network errors: returns `[]` (no throw).
- * 
+ *
  * @param {string} query - Raw user input (trimmed and URL-encoded).
  * @param {Object} [opts] - Optional settings.
  * @param {AbortSignal} [opts.signal] - Used to cancel the request (typing).
@@ -204,7 +202,7 @@ export const fetchAllUserRepos = async (
 
 export const searchUserFetch = async (
   query: string,
-  opts?: { signal?: AbortSignal }
+  opts?: { signal?: AbortSignal },
 ): Promise<UserSuggestion[]> => {
   try {
     const q = query.trim();
@@ -218,7 +216,7 @@ export const searchUserFetch = async (
           Accept: "application/vnd.github+json",
         },
         signal: opts?.signal,
-      }
+      },
     );
 
     if (!res.ok) {

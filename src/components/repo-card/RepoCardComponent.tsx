@@ -7,17 +7,17 @@ import { getLanguageColor } from "../../core/utils/languageColors";
 
 /**
  * Card that displays a single GitHub repository.
- * 
+ *
  * Responsibilities:
  * - Shows repo name, description (if present), language badge (with color),
  *   stargazers count (if > 0) and forks (if > 0).
  * - Displays a relative "Updated..." timestamp.
  * - Wraps the article in a link to the repository page (`repo.html_url`).
- * 
+ *
  * Accessibility:
  * - Uses `aria-labelledby` to associate to the repository page (`repo.html_url`).
  * - Decorative icons are `aria-hidden` where appropriate.
- * 
+ *
  * Notes:
  * - Color for the language chip is derived from `getLanguageColor(lang)`,
  *   falling back to a hashed HSL for unknown languages.
@@ -25,7 +25,7 @@ import { getLanguageColor } from "../../core/utils/languageColors";
 
 /**
  * Props for RepoCardComponent.
- * 
+ *
  * @property {GithubRepo} repo - Repository data to display.
  */
 
@@ -33,12 +33,12 @@ type Props = { repo: GithubRepo };
 
 /**
  * RepoCardComponent
- * 
+ *
  * Renders a repository preview suitable for grid/list layouts.
  * Non-essential chips (stars/forks) are hidden when zero to reduce noise.
- * 
+ *
  * @example
- * 
+ *
  * <RepoCardComponent repo={repo} />
  */
 
